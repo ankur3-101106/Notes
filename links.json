@@ -1,0 +1,197 @@
+[
+  {
+    "semester": 3,
+    "subjects": [
+      {
+        "name": "KLSS (Kali Linux & Shell Scripting)",
+        "items": [
+          {
+            "title": "Question Bank",
+            "url": "https://ankur3.notion.site/Question-Bank-2b1f7a66551880fb881ae0bae4ee1f32",
+            "desc": "Question for KLSS"
+          },
+          {
+            "title": "Unit - 1: Introduction to Shell Scripting",
+            "url": "https://ankur3.notion.site/Unit-1-23df7a665518805f9184fd08978da8a0",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 2: Advanced Shell Scripting Techniques",
+            "url": "https://ankur3.notion.site/Unit-2-240f7a66551880aa9ce9d650d89a947b",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 3: Shell Scripting for System Administration",
+            "url": "https://ankur3.notion.site/Unit-3-241f7a66551880718e61f144c71728d1",
+            "desc": ""
+          }
+        ]
+      },
+      {
+        "name": "OOPJ (Object-Oriented Programming with Java)",
+        "items": [
+          {
+            "title": "Advanced Java Notes",
+            "url": "https://ankur3.notion.site/Complete-Notes-282f7a66551880a38e74e6149a0f2793",
+            "desc": "Notes for Advanced Java"
+          },
+          {
+            "title": "Question Bank",
+            "url": "https://ankur3.notion.site/Question-Bank-2adf7a66551880d4a518eaae37ffce97",
+            "desc": "Notes for Advanced Java"
+          },
+          {
+            "title": "Unit - 1: Design Introduction",
+            "url": "https://ankur3.notion.site/Unit-1-Design-Introduction-247f7a665518804581cedcde93deb7c1",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 2: Data Types, Variable, Operators",
+            "url": "https://ankur3.notion.site/Unit-2-Data-Types-Variable-Operators-247f7a6655188029b7d5c6c696b5ba8b",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 3: Control Statements",
+            "url": "https://ankur3.notion.site/Unit-3-Control-Statements-247f7a6655188031b2dac69814064a74",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 4: Array",
+            "url": "https://ankur3.notion.site/Unit-4-Array-247f7a66551880dba30dc95c1f1984be",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 5: Object Oriented Programming",
+            "url": "https://ankur3.notion.site/Unit-5-Object-Oriented-Programming-2a1f7a66551880689645e066574e48c8",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 6: Inheritance",
+            "url": "https://ankur3.notion.site/Unit-6-Inheritance-2a1f7a665518808fbec1c8721e8714da",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 7: Strings, Packages & Interface",
+            "url": "https://ankur3.notion.site/Unit-7-Strings-Packages-Interface-2a1f7a66551880399249d29e775521ff",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 8: Exception Handling",
+            "url": "https://ankur3.notion.site/Unit-8-Exception-Handling-2a1f7a66551880bda16ec028d5942ec1",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 9: Multithreading",
+            "url": "https://ankur3.notion.site/Unit-9-Multithreading-2a1f7a66551880548659d26290c16a9a",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 10: Collections Framework",
+            "url": "https://ankur3.notion.site/Unit-10-Collections-Framework-2a1f7a6655188049b9b8fc44ee8c41f2",
+            "desc": ""
+          }
+        ]
+      },
+      {
+        "name": "DDS (Data Structures & Design)",
+        "items": [
+          {
+            "title": "Question Bank",
+            "url": "https://ankur3.notion.site/Question-Bank-2aaf7a66551880cba0d4c1608f447a73",
+            "desc": "QB for all 8 units"
+          },
+          {
+            "title": "Unit - 1: Introduction",
+            "url": "https://ankur3.notion.site/Unit-1-Introduction-242f7a66551880bd8e2af08fd08255db",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 2: Stacks, Recursion & Queue",
+            "url": "https://ankur3.notion.site/Unit-2-Stacks-Recursion-Queue-242f7a6655188067a3bad5380bb4dec5",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 3: Linked Lists",
+            "url": "https://ankur3.notion.site/Unit-3-Linked-Lists-242f7a66551880a8af36e53583adb41b",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 4: Searching & Sorting",
+            "url": "https://ankur3.notion.site/Unit-4-Searching-Sorting-2a1f7a6655188097a93bc47c213e4141",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 5: Trees",
+            "url": "https://ankur3.notion.site/Unit-5-Trees-2a1f7a66551880419c5bcac51b5d5d9d",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 6: Red Black Trees & AVL Trees",
+            "url": "https://ankur3.notion.site/Unit-6-Red-Black-Trees-AVL-Trees-2a1f7a665518804fae9ff0a76544a6f4",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 7: Hashing",
+            "url": "https://ankur3.notion.site/Unit-7-Hashing-2a1f7a66551880ce9421c53cfd1d9232",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 8: Graphs",
+            "url": "https://ankur3.notion.site/Unit-8-Graphs-2a1f7a66551880249164f68644a78dd4",
+            "desc": ""
+          }
+        ]
+      },
+      {
+        "name": "DBMS (Database Management Systems)",
+        "items": [
+          {
+            "title": "Unit - 1: Intro",
+            "url": "https://ankur3.notion.site/Unit-1-Introduction-246f7a66551880a29e70c3637099a47b",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 2: SQL & Its Components",
+            "url": "https://ankur3.notion.site/Unit-2-SQL-Its-Components-246f7a66551880159b24f6b094c5335a",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 3: Database Models",
+            "url": "https://ankur3.notion.site/Unit-3-Database-Models-246f7a6655188052ab89ee583bf27cc0",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 4: Relational Query Languages - Relational Algebra",
+            "url": "https://ankur3.notion.site/Unit-4-Relational-Query-Languages-Relational-Algebra-246f7a6655188090b083d52bd366c90a",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 5: Relational Database Design",
+            "url": "https://ankur3.notion.site/Unit-5-Relational-Database-Design-2a1f7a66551880669810e44b8c392091",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 6: Transaction",
+            "url": "https://ankur3.notion.site/Unit-6-Transaction-2a1f7a66551880c7bc47d63cc245b33e",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 7: Query processing and Optimization",
+            "url": "https://ankur3.notion.site/Unit-7-Query-processing-and-Optimization-2a1f7a665518807ebae8fb10ebd6d552",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 8: Database Security",
+            "url": "https://ankur3.notion.site/Unit-8-Database-Security-2a1f7a665518806789c7ebf55527fea8",
+            "desc": ""
+          },
+          {
+            "title": "Unit - 9: PL/SQL",
+            "url": "https://ankur3.notion.site/Unit-9-PL-SQL-2a1f7a66551880ac9b38c7f1f001146a",
+            "desc": ""
+          }
+        ]
+      }
+    ]
+  }
+]

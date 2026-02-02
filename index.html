@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Notion Archive | ANKUR</title>
+  <meta name="description" content="A collection of Notion study pages by Ankur. Search, filter, add and export links." />
+  <style>
+    :root{
+      --bg:#100b1a; /* Dark Purple-Black */
+      --card:#171124; /* Darker Purple for containers */
+      --muted:#e3e1ff; /* Brightened soft white/light purple for descriptions/meta */
+      --accent:#d946ef; /* Vibrant Fuchsia Accent */
+      --glass: rgba(255,255,255,0.03);
+      --gap:16px;
+      --radius:14px;
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    
+    /* === DESKTOP STYLES (Default) === */
+    html,body{
+        height:100%;
+        margin:0;
+        color:#e6eef6;
+        
+        /* Desktop background with image */
+        background-image: url('win.jpg');
+        background-color: var(--bg);
+        background-repeat: repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: top left;
+    }
+
+    .container{
+      margin: 20px;
+      padding:28px;
+      background:rgba(16, 11, 26, 0.7);
+      border-radius:18px;
+      box-shadow:0 8px 60px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;color:#04293a}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    .controls{display:flex;gap:12px;align-items:center}
+    .search{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:10px 12px;
+      border-radius:12px;
+      min-width:260px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .search input{background:transparent;border:0;outline:none;color:inherit;font-size:14px;width:100%}
+
+    .btn{background:linear-gradient(90deg,#9333ea 0%, #d946ef 100%);padding:10px 14px;border-radius:12px;border:0;color:#fff0ff;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+    .filters{
+        display:flex;
+        gap:8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin:18px 0 8px;
+        padding-bottom: 8px;
+    }
+
+    .chip{
+        padding:8px 10px;
+        border-radius:999px;
+        background:rgba(255,255,255,0.03);
+        border:1px solid rgba(255,255,255,0.04);
+        font-size:13px;
+        color:var(--muted);
+        cursor:pointer;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        flex-shrink: 0;
+    }
+    .chip.active{background:linear-gradient(90deg,#3c1266,#5b21b6);color:var(--accent);border-color:rgba(217,70,239,0.2)}
+
+    .subjects{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
+
+    .subject{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .subject h2{margin:0;font-size:16px}
+    .subject .meta{color:var(--muted);font-size:13px;margin-top:6px}
+
+    .card-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    @media(min-width:560px){.card-grid{grid-template-columns:repeat(2,1fr)}}
+
+    .card{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      transform: translateZ(0);
+      transition: transform 0.2s ease;
+    }
+
+    .favicon{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#be185d,#9333ea);display:flex;align-items:center;justify-content:center;font-weight:700}
+    
+    .card-body{flex:1}
+    .card-title{margin:0;font-size:14px}
+    .card-desc{margin:6px 0 0;color:var(--muted);font-size:13px}
+    
+    .card-actions{display:flex;gap:8px;margin-left:8px}
+    .small{font-size:12px;padding:8px 10px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+
+    .empty{padding:18px;border-radius:12px;background:rgba(255,255,255,0.01);color:var(--muted);text-align:center}
+
+    .modal-back{position:fixed;inset:0;background:rgba(2,6,23,0.8);display:none;align-items:center;justify-content:center;z-index:1000}
+    .modal{
+      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      padding:18px;
+      border-radius:12px;
+      min-width:320px;
+      border:1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .field{display:flex;flex-direction:column;margin-bottom:10px}
+    .field label{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .field input,.field textarea,.field select{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;font-size:14px;outline:none}
+
+    footer{margin-top:18px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+    .actions-bar{display:flex;gap:8px;align-items:center}
+
+    .card:hover{transform:translateY(-4px);}
+
+    .filters::-webkit-scrollbar { height: 2px; }
+    .filters::-webkit-scrollbar-track { background: transparent; }
+    .filters::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+    .filters::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.3); }
+
+    /* === DROPDOWN FIXES === */
+    .field select, .field option {
+        background: var(--card) !important;
+        color: #e6eef6 !important;
+    }
+
+    .field select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e3e1ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 35px;
+    }
+
+    .field option {
+        background: var(--card);
+        color: #e6eef6;
+        padding: 8px;
+    }
+
+    .modal .field input, 
+    .modal .field textarea, 
+    .modal .field select {
+        background: rgba(255,255,255,0.05) !important;
+        color: #e6eef6 !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+    }
+
+    /* === MOBILE STYLES (Max 768px) - OPTIMIZED FOR PERFORMANCE === */
+    @media(max-width: 768px) {
+        html,body {
+            /* Mobile background - simplified solid color for performance */
+            background: var(--bg);
+            background-image: none; /* Remove image on mobile */
+            background-attachment: scroll;
+        }
+
+        .container {
+            margin: 8px;
+            padding: 16px;
+            backdrop-filter: none; /* Remove blur on mobile */
+            -webkit-backdrop-filter: none;
+            background: rgba(16, 11, 26, 0.95); /* More opaque for better contrast */
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .controls {
+            width: 100%;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .search {
+            order: -1;
+            width: 100%;
+            min-width: unset;
+            backdrop-filter: none; /* Remove blur on mobile */
+            -webkit-backdrop-filter: none;
+        }
+
+        .btn, .btn.ghost {
+            width: 100%;
+            text-align: center;
+        }
+
+        .brand {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .card-actions {
+            flex-direction: column;
+            gap: 4px;
+            margin-left: 12px;
+        }
+
+        /* Mobile-optimized card styles */
+        .card {
+            backdrop-filter: none; /* Remove expensive blur effects */
+            -webkit-backdrop-filter: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            background: rgba(255,255,255,0.05); /* Solid background instead of gradient */
+            transform: none; /* Remove translateZ for better performance */
+        }
+
+        .card:hover {
+            transform: none; /* Disable hover effects on mobile */
+        }
+
+        .subject {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .chip {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .modal {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background: rgba(16, 11, 26, 0.98);
+            width: 90vw;
+            max-width: 400px;
+            min-width: unset;
+        }
+
+        /* Mobile dropdown fixes */
+        .field select, .field option {
+            background: rgba(16, 11, 26, 0.95) !important;
+            color: #e6eef6 !important;
+        }
+        
+        .modal .field input, 
+        .modal .field textarea, 
+        .modal .field select {
+            background: rgba(16, 11, 26, 0.8) !important;
+            color: #e6eef6 !important;
+        }
+
+        /* Improve touch scrolling */
+        .filters {
+            touch-action: pan-x;
+        }
+
+        .subjects {
+            touch-action: pan-y;
+        }
+
+        /* Optimize grid layout for mobile */
+        .card-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+        }
+
+        h1 {
+            font-size: 18px;
+        }
+    }
+
+    /* Additional mobile optimization for very small screens */
+    @media(max-width: 360px) {
+        .container {
+            margin: 5px;
+            padding: 12px;
+        }
+
+        .card {
+            padding: 10px;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-actions {
+            margin-left: 0;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .small {
+            flex: 1;
+            text-align: center;
+        }
+
+        .favicon {
+            width: 40px;
+            height: 40px;
+            align-self: center;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">NS</div>
+        <div>
+          <h1>Ankur's Notion Pages</h1>
+          <p class="lead">All Notion pages grouped by Subject.</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+          <input id="q" placeholder="Search pages, titles, descriptions..." />
+        </div>
+        <button id="addBtn" class="btn">Add link</button>
+        <button id="exportBtn" class="btn ghost">Export</button>
+        <button id="importBtn" class="btn ghost">Import</button>
+      </div>
+    </header>
+
+    <section class="filters" id="filters"></section>
+
+    <main class="subjects" id="subjects"></main>
+
+    <footer>
+      <div>Made by ANKUR.</div>
+      <div class="actions-bar">
+      </div>
+    </footer>
+  </div>
+
+  <div class="modal-back" id="modalBack">
+    <div class="modal">
+      <h3>Add Notion Link</h3>
+      <div class="field"><label>Subject</label><select id="inpSub"></select></div>
+      <div class="field"><label>Title</label><input id="inpTitle" placeholder="Title — e.g., DDS Cheatsheet" /></div>
+      <div class="field"><label>Notion URL</label><input id="inpURL" placeholder="https://www.notion.so/..." /></div>
+      <div class="field"><label>Description (optional)</label><textarea id="inpDesc" rows="3" placeholder="short description"></textarea></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+        <button id="cancelAdd" class="btn ghost">Cancel</button>
+        <button id="saveAdd" class="btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="fileImport" accept="application/json" style="display:none" />
+
+  <script>
+// Debounce function for better performance
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+const DEFAULT_DATA = {
+  "subjects": [
+        {
+          "id": "klss",
+          "name": "KLSS (Kali Linux & Shell Scripting)",
+          "items": [
+            {
+              "id": "",
+              "title": "Question Bank",
+              "url": "https://ankur3.notion.site/Question-Bank-2b1f7a66551880fb881ae0bae4ee1f32?source=copy_link",
+              "desc": "Question for KLSS"
+            },
+            {
+              "id": "",
+              "title": "Unit - 1: Introduction to Shell Scripting",
+              "url": "https://ankur3.notion.site/Unit-1-23df7a665518805f9184fd08978da8a0?source=copy_link",
+              "desc": ""
+            },
+            {
+              "id": "",
+              "title": "Unit - 2: Advanced Shell Scripting Techniques",
+              "url": "https://ankur3.notion.site/Unit-2-240f7a66551880aa9ce9d650d89a947b?source=copy_link",
+              "desc": ""
+            },
+            {
+              "id": "mhkek2oq",
+              "title": "Unit - 3: Shell Scripting for System Administration",
+              "url": "https://ankur3.notion.site/Unit-3-241f7a66551880718e61f144c71728d1?source=copy_link",
+              "desc": ""
+            }
+          ]
+        },
+        {
+      "id": "oopj",
+      "name": "OOPJ (Object-Oriented Programming with Java)",
+      "items": [
+        {
+          "id": "",
+          "title": "Advanced Java Notes",
+          "url": "https://ankur3.notion.site/Complete-Notes-282f7a66551880a38e74e6149a0f2793?source=copy_link",
+          "desc": "Notes for Advanced Java"
+        },
+        {
+          "id": "",
+          "title": "Question Bank",
+          "url": "https://ankur3.notion.site/Question-Bank-2adf7a66551880d4a518eaae37ffce97?source=copy_link",
+          "desc": "Notes for Advanced Java"
+        },
+        {
+          "id": "mhkek2oq",
+          "title": "Unit - 1: Design Introduction",
+          "url": "https://ankur3.notion.site/Unit-1-Design-Introduction-247f7a665518804581cedcde93deb7c1?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkeidw9",
+          "title": "Unit - 2: Data Types, Variable, Operators",
+          "url": "https://ankur3.notion.site/Unit-2-Data-Types-Variable-Operators-247f7a6655188029b7d5c6c696b5ba8b?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkehx02",
+          "title": "Unit - 3: Control Statements",
+          "url": "https://ankur3.notion.site/Unit-3-Control-Statements-247f7a6655188031b2dac69814064a74?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkehhqy",
+          "title": "Unit - 4: Array",
+          "url": "https://ankur3.notion.site/Unit-4-Array-247f7a66551880dba30dc95c1f1984be?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkegurf",
+          "title": "Unit - 5: Object Oriented Programming",
+          "url": "https://ankur3.notion.site/Unit-5-Object-Oriented-Programming-2a1f7a66551880689645e066574e48c8?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkeghrt",
+          "title": "Unit - 6: Inheritance",
+          "url": "https://ankur3.notion.site/Unit-6-Inheritance-2a1f7a665518808fbec1c8721e8714da?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkeg17m",
+          "title": "Unit - 7: Strings, Packages & Interface",
+          "url": "https://ankur3.notion.site/Unit-7-Strings-Packages-Interface-2a1f7a66551880399249d29e775521ff?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkeex4r",
+          "title": "Unit - 8: Exception Handling",
+          "url": "https://ankur3.notion.site/Unit-8-Exception-Handling-2a1f7a66551880bda16ec028d5942ec1?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkeejz6",
+          "title": "Unit - 9: Multithreading",
+          "url": "https://ankur3.notion.site/Unit-9-Multithreading-2a1f7a66551880548659d26290c16a9a?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkee5iq",
+          "title": "Unit - 10: Collections Framework",
+          "url": "https://ankur3.notion.site/Unit-10-Collections-Framework-2a1f7a6655188049b9b8fc44ee8c41f2?source=copy_link",
+          "desc": ""
+        }
+      ]
+    },
+    {
+      "id": "dds",
+      "name": "DDS (Data Structures & Design)",
+      "items": [
+        {
+          "id": "",
+          "title": "Question Bank",
+          "url": "https://ankur3.notion.site/Question-Bank-2aaf7a66551880cba0d4c1608f447a73?source=copy_link",
+          "desc": "QB for all 8 units"
+        },
+        {
+          "id": "mhkd6zv5",
+          "title": "Unit - 1: Introduction",
+          "url": "https://ankur3.notion.site/Unit-1-Introduction-242f7a66551880bd8e2af08fd08255db?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkd7mux",
+          "title": "Unit - 2: Stacks, Recursion & Queue",
+          "url": "https://ankur3.notion.site/Unit-2-Stacks-Recursion-Queue-242f7a6655188067a3bad5380bb4dec5?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkd7yxd",
+          "title": "Unit - 3: Linked Lists",
+          "url": "https://ankur3.notion.site/Unit-3-Linked-Lists-242f7a66551880a8af36e53583adb41b?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkd8c42",
+          "title": "Unit - 4: Searching & Sorting",
+          "url": "https://ankur3.notion.site/Unit-4-Searching-Sorting-2a1f7a6655188097a93bc47c213e4141?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkd8nr5",
+          "title": "Unit - 5: Trees",
+          "url": "https://ankur3.notion.site/Unit-5-Trees-2a1f7a66551880419c5bcac51b5d5d9d?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkd911c",
+          "title": "Unit - 6: Red Black Trees & AVL Trees",
+          "url": "https://ankur3.notion.site/Unit-6-Red-Black-Trees-AVL-Trees-2a1f7a665518804fae9ff0a76544a6f4?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkd9clm",
+          "title": "Unit - 7: Hashing",
+          "url": "https://ankur3.notion.site/Unit-7-Hashing-2a1f7a66551880ce9421c53cfd1d9232?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkd9tft",
+          "title": "Unit - 8: Graphs",
+          "url": "https://ankur3.notion.site/Unit-8-Graphs-2a1f7a66551880249164f68644a78dd4?source=copy_link",
+          "desc": ""
+        }
+      ]
+    },
+    {
+      "id": "dbms",
+      "name": "DBMS (Database Management Systems)",
+      "items": [
+        {
+          "id": "mhk8o5nw",
+          "title": "Unit - 1: Intro",
+          "url": "https://ankur3.notion.site/Unit-1-Introduction-246f7a66551880a29e70c3637099a47b?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhk8ozv2",
+          "title": "Unit - 2: SQL & Its Components",
+          "url": "https://ankur3.notion.site/Unit-2-SQL-Its-Components-246f7a66551880159b24f6b094c5335a?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhk8qa52",
+          "title": "Unit - 3: Database Models",
+          "url": "https://ankur3.notion.site/Unit-3-Database-Models-246f7a6655188052ab89ee583bf27cc0",
+          "desc": ""
+        },
+        {
+          "id": "mhk8r4z7",
+          "title": "Unit - 4: Relational Query Languages - Relational Algebra",
+          "url": "https://ankur3.notion.site/Unit-4-Relational-Query-Languages-Relational-Algebra-246f7a6655188090b083d52bd366c90a",
+          "desc": ""
+        },
+        {
+          "id": "mhkci61d",
+          "title": "Unit - 5: Relational Database Design",
+          "url": "https://ankur3.notion.site/Unit-5-Relational-Database-Design-2a1f7a66551880669810e44b8c392091?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkcin75",
+          "title": "Unit - 6: Transaction",
+          "url": "https://ankur3.notion.site/Unit-6-Transaction-2a1f7a66551880c7bc47d63cc245b33e?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkcj7ts",
+          "title": "Unit - 7: Query processing and Optimization",
+          "url": "https://ankur3.notion.site/Unit-7-Query-processing-and-Optimization-2a1f7a665518807ebae8fb10ebd6d552?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkcjmm0",
+          "title": "Unit - 8: Database Security",
+          "url": "https://ankur3.notion.site/Unit-8-Database-Security-2a1f7a665518806789c7ebf55527fea8?source=copy_link",
+          "desc": ""
+        },
+        {
+          "id": "mhkck3aa",
+          "title": "Unit - 9: PL/SQL",
+          "url": "https://ankur3.notion.site/Unit-9-PL-SQL-2a1f7a66551880ac9b38c7f1f001146a?source=copy_link",
+          "desc": ""
+        }
+      ]
+    }
+  ]
+};
+
+    // State loads directly from the object (no persistence)
+    let state = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    let activeFilter = null;
+
+    // DOM refs
+    const subjectsEl = document.getElementById('subjects');
+    const filtersEl = document.getElementById('filters');
+    const qEl = document.getElementById('q');
+    const addBtn = document.getElementById('addBtn');
+    const modalBack = document.getElementById('modalBack');
+    const inpSub = document.getElementById('inpSub');
+    const inpTitle = document.getElementById('inpTitle');
+    const inpURL = document.getElementById('inpURL');
+    const inpDesc = document.getElementById('inpDesc');
+    const cancelAdd = document.getElementById('cancelAdd');
+    const saveAdd = document.getElementById('saveAdd');
+    const exportBtn = document.getElementById('exportBtn');
+    const importBtn = document.getElementById('importBtn');
+    const fileImport = document.getElementById('fileImport');
+
+    // render
+    function renderFilters(){
+      filtersEl.innerHTML = '';
+      const allChip = document.createElement('div');
+      allChip.className = 'chip ' + (activeFilter===null? 'active':'');
+      allChip.textContent = 'All Subjects';
+      allChip.onclick = ()=>{activeFilter=null;render();renderFilters()};
+      filtersEl.appendChild(allChip);
+
+      state.subjects.forEach(s=>{
+        const el = document.createElement('div');
+        el.className = 'chip ' + (activeFilter===s.id? 'active':'');
+        el.textContent = s.name + (s.items.length? ` • ${s.items.length}`:'');
+        el.onclick = ()=>{ activeFilter = (activeFilter===s.id? null: s.id); render(); renderFilters(); }
+        filtersEl.appendChild(el);
+      })
+    }
+
+    function render(){
+      const q = qEl.value.trim().toLowerCase();
+      subjectsEl.innerHTML = '';
+
+      let subjectsToRender = state.subjects;
+      
+      // Filter out subjects with 0 links 
+      subjectsToRender = subjectsToRender.filter(s => s.items.length > 0);
+      
+      // If a specific filter is active, only render that subject.
+      if (activeFilter !== null) {
+        subjectsToRender = subjectsToRender.filter(s => s.id === activeFilter);
+      } 
+      
+      // Start rendering loop (runs multiple times if activeFilter is null, grouping by subject)
+      subjectsToRender.forEach(subject=>{
+        const wrapper = document.createElement('section');
+        wrapper.className = 'subject';
+        
+        const totalItems = subject.items.length;
+
+        // Header and Meta
+        const title = document.createElement('h2'); 
+        title.textContent = subject.name;
+        
+        const meta = document.createElement('div'); 
+        meta.className='meta'; 
+        meta.textContent = `${totalItems} page(s)`;
+        
+        wrapper.appendChild(title); 
+        wrapper.appendChild(meta);
+
+        const grid = document.createElement('div'); 
+        grid.className='card-grid';
+
+        const visible = subject.items.filter(it=>{
+          if(!q) return true;
+          return (it.title+ ' ' + (it.desc||'')).toLowerCase().includes(q);
+        });
+
+        if(!visible.length){
+          const empty = document.createElement('div'); empty.className='empty'; empty.textContent = 'No pages found matching your search.'; grid.appendChild(empty);
+        } else {
+          visible.forEach(it=>{
+            const card = document.createElement('div'); card.className='card';
+            const fav = document.createElement('div'); fav.className='favicon'; 
+            
+            // Generate favicon text from title
+            const titleWords = it.title.split(/[\s-]/).filter(word => word.length > 0);
+            fav.textContent = titleWords.length > 1 ? titleWords.map(s => s[0]).slice(0,2).join('').toUpperCase() : it.title.slice(0,2).toUpperCase();
+            
+            const body = document.createElement('div'); body.className='card-body';
+            const t = document.createElement('h3'); t.className='card-title'; t.textContent = it.title;
+            const d = document.createElement('div'); d.className='card-desc'; d.textContent = it.desc|| 'No description';
+            body.appendChild(t); body.appendChild(d);
+
+            const actions = document.createElement('div'); actions.className='card-actions';
+            const open = document.createElement('button'); open.className='small'; open.textContent='Open';
+            open.onclick = ()=> window.open(it.url, '_blank');
+            const edit = document.createElement('button'); edit.className='small'; edit.textContent='Edit';
+            edit.onclick = ()=> editItem(subject.id, it.id); 
+            
+            const remove = document.createElement('button'); remove.className='small'; remove.textContent='Remove';
+            remove.onclick = ()=> { 
+                removeItem(subject.id, it.id); 
+            };
+            actions.appendChild(open); actions.appendChild(edit); actions.appendChild(remove);
+
+            card.appendChild(fav); card.appendChild(body); card.appendChild(actions);
+            grid.appendChild(card);
+          })
+        }
+
+        wrapper.appendChild(grid);
+        subjectsEl.appendChild(wrapper);
+      })
+
+      populateSubjectSelect();
+    }
+
+    function populateSubjectSelect(){
+      inpSub.innerHTML='';
+      state.subjects.forEach(s=>{
+        const opt=document.createElement('option'); opt.value=s.id; opt.textContent=s.name; inpSub.appendChild(opt);
+      })
+    }
+
+    // data ops
+    function save(){ /* No persistence */ }
+
+    function addItem(subjectId, title, url, desc){
+      const subj = state.subjects.find(s=>s.id===subjectId);
+      if(!subj) return;
+      const item = {id: (Date.now().toString(36)), title, url, desc};
+      subj.items.unshift(item);
+      save(); render(); renderFilters();
+    }
+
+    function removeItem(subjectId, itemId){
+      const subj = state.subjects.find(s=>s.id===subjectId);
+      subj.items = subj.items.filter(i=>i.id!==itemId);
+      save(); render(); renderFilters();
+    }
+
+    function editItem(subjectId, itemId){
+      const subj = state.subjects.find(s=>s.id===subjectId);
+      const it = subj.items.find(i=>i.id===itemId);
+      if(!it) return;
+      // open modal with values and replace on save
+      openModal();
+      inpSub.value = subjectId; inpTitle.value=it.title; inpURL.value=it.url; inpDesc.value=it.desc||'';
+      saveAdd.onclick = ()=>{
+        it.title = inpTitle.value || it.title; it.url = inpURL.value || it.url; it.desc = inpDesc.value; save(); render(); renderFilters(); closeModal();
+      }
+    }
+
+    // UI modal
+    function openModal(){ modalBack.style.display='flex'; }
+    function closeModal(){ modalBack.style.display='none'; inpTitle.value=''; inpURL.value=''; inpDesc.value=''; saveAdd.onclick = handleSaveAdd; }
+
+    function handleSaveAdd(){
+      const sub = inpSub.value; const t = inpTitle.value.trim(); const u = inpURL.value.trim(); const d = inpDesc.value.trim();
+      if(!t || !u) { alert('Please provide Title and URL.'); return; }
+      addItem(sub,t,u,d); closeModal();
+    }
+
+    // import/export
+    exportBtn.onclick = ()=>{
+      const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = 'links.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+
+    importBtn.onclick = ()=> fileImport.click();
+    fileImport.onchange = (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const reader = new FileReader(); reader.onload = ()=>{
+        try{ 
+            const obj = JSON.parse(reader.result); 
+            if(obj && obj.subjects) { 
+                state = obj; 
+                render(); 
+                renderFilters(); 
+                alert('Imported successfully'); 
+            } else alert('Invalid JSON structure'); 
+        }catch(err){ alert('Invalid JSON'); }
+      }; 
+      reader.readAsText(f);
+    }
+
+    // wire up with debounced search
+    addBtn.addEventListener('click', ()=>{ openModal(); });
+    cancelAdd.addEventListener('click', ()=> closeModal());
+    modalBack.addEventListener('click', (e)=>{ if(e.target===modalBack) closeModal(); });
+    saveAdd.addEventListener('click', handleSaveAdd);
+    qEl.addEventListener('input', debounce(()=> render(), 300));
+
+    // init
+    function init(){ renderFilters(); render(); }
+    init();
+
+  </script>
+</body>
+</html>

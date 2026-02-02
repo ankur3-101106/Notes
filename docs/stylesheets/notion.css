@@ -1,0 +1,48 @@
+/* Center content like Notion */
+.md-content {
+  max-width: 720px;
+  margin: auto;
+}
+
+/* Softer typography */
+.md-content p {
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+/* Headings like Notion */
+.md-content h1 {
+  font-size: 2.4em;
+  font-weight: 700;
+  color: blueviolet;
+}
+
+.md-content h2 {
+  font-size: 1.7em;
+  font-weight: 600;
+}
+
+.md-content h3 {
+  font-size: 1.3em;
+  font-weight: 600;
+}
+
+/* Remove harsh borders */
+.md-typeset hr {
+  border: none;
+  height: 1px;
+  background: #eaeaea;
+}
+
+/* Code blocks feel like Notion */
+.md-typeset pre {
+  border-radius: 8px;
+  padding: 1em;
+  font-size: 0.9em;
+}
+
+/* Callouts softer */
+.md-typeset .admonition {
+  border-radius: 10px;
+  border-left-width: 4px;
+}

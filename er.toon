@@ -1,0 +1,16 @@
+// toon Token oriented object notation
+// version 0.9.8
+
+// example
+{
+name: "example",
+type: "object",
+properties: {
+id: { type: "integer" },
+name: { type: "string" },
+tags: {
+type: "array",
+items: { type: "string" }
+}
+}
+}
