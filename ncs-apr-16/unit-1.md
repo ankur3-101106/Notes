@@ -75,8 +75,6 @@ A PAN is a computer network for interconnecting electronic devices within an ind
 * **Peripherals:** Wireless mice, printers, and personal digital assistants.
 * **Modern IoT:** Wearables and various IoT (Internet of Things) devices.
 
-[Image of Personal Area Network PAN](https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSgbRGoV9HR0xt5qgHJhVD4PWSVke86Kk0ZjS_E7viLdrvRw2TAWRhsszqBnpLrFZU9REKM7RWZbfe46sWw2xaGXt9-87Ke6HjOWJMj8cAqpgnt5ok)
-
 ***
 
 ### 2.2 Local Area Network (LAN)
@@ -95,8 +93,6 @@ A LAN interconnects computers within a limited physical area.
 * **End Devices:** Computers and smartphones.
 * **Intermediary Devices:** Access points, **routers**, and **switches**.
 * **Hardware Essentials:** LAN cables (Ethernet) and printers.
-
-[Image of Local Area Network LAN diagram](https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcRuv74QmYwXZH6vmPDvdWJqlRZrXdxoyJNVkpOrdemBiI8cnt2WvoNbXdqBd5urcWErkqUaM3VteyBZiIwInfAPMLVzNmskh87EvK_nc0ZVo2Vohls)
 
 ***
 
