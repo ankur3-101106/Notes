@@ -4,12 +4,6 @@ description: Basics of Routing & Switching
 
 # Unit - 2
 
-[𝕮𝖚𝖗𝖗𝖎𝖈𝖚𝖑𝖚𝖒](https://www.notion.so/d0041eacd2a3493ba9367f74ea0b45e9?pvs=21)
-
-## Unit 2 : **Basics of Routing & Switching**
-
-***
-
 ***
 
 ## 1. Router

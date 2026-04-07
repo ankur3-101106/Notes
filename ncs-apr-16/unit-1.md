@@ -4,8 +4,6 @@ description: Type of Network & OSI Layers
 
 # Unit - 1
 
-## UNIT 1: TYPE OF NETWORKS & OSI MODEL
-
 ***
 
 ## 1. Network Concept of Security
