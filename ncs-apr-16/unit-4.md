@@ -881,7 +881,7 @@ Ettercap is an **open-source network security tool** used for performing **Man-i
 
 ```mermaid
 flowchart LR
-A[User] --> B[Attacker (Ettercap)]
+A[User] --> B["Attacker (Ettercap)"]
 B --> C[Server]
 C --> B
 B --> A
@@ -2640,7 +2640,7 @@ D --> E[Handshake Captured]
 
 ```mermaid
 flowchart LR
-A[User] --> B[Fake WiFi (Evil Twin)]
+A[User] --> B["Fake WiFi (Evil Twin)"]
 B --> C[Attacker Intercepts Traffic]
 C --> D[Data Stolen]
 ```
