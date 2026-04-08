@@ -1476,18 +1476,18 @@ If ICV mismatch:
 #### AH Header Layout Summary
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[Next Header]
     B[Payload Length]
     C[Reserved]
     D[SPI]
     E[Sequence Number]
-    F[Authentication Data (ICV)]
+    F["Authentication Data (ICV)"]
 ```
 
 ***
 
-## AH Summary Table
+### AH Summary Table
 
 | Feature                 | Provided by AH |
 | ----------------------- | -------------- |
@@ -1500,7 +1500,7 @@ flowchart TD
 
 ***
 
-## Important Exam Points
+### Important Exam Points
 
 1. AH is one of two main IPsec protocols.
 2. AH provides authentication and integrity.
@@ -1604,7 +1604,7 @@ AH ensures that the packet:
 
 ***
 
-### 6.2.2 Encapsulating Security Payload (ESP)
+#### 6.2.2 Encapsulating Security Payload (ESP)
 
 (Page 45 )
 
@@ -1677,7 +1677,7 @@ flowchart TD
 
 ***
 
-### 6.2.3 Security Associations (SA)
+#### 6.2.3 Security Associations (SA)
 
 #### **6.2.3.1 Definition**
 
@@ -1729,9 +1729,7 @@ flowchart TD
 
 ***
 
-### 6.2.4 Internet Key Exchange (IKE)
-
-(Page 47 )
+#### 6.2.4 Internet Key Exchange (IKE)
 
 IKE automates:
 
@@ -1795,9 +1793,7 @@ flowchart TD
 
 ***
 
-### 6.2.5 Key Management
-
-(Page 48 )
+#### 6.2.5 Key Management
 
 Key Management involves:
 
@@ -1863,7 +1859,7 @@ flowchart TD
 
 ***
 
-## Complete IPsec Architecture Overview
+### Complete IPsec Architecture Overview
 
 ```mermaid
 flowchart TD
@@ -1876,7 +1872,7 @@ flowchart TD
 
 ***
 
-## Summary Table
+### Summary Table
 
 | Component      | Function                    |
 | -------------- | --------------------------- |
@@ -1888,7 +1884,7 @@ flowchart TD
 
 ***
 
-## Important Exam Points
+### Important Exam Points
 
 1. IPsec secures IP communication at Network Layer.
 2. IPsec provides authentication, integrity, confidentiality, replay protection.
@@ -1901,10 +1897,6 @@ flowchart TD
 9. Keys have defined lifetime.
 
 ***
-
-***
-
-(From **Unit-3: Proxy & VPNs**, IKE Phase 1 – pages 50–57 )
 
 ***
 
@@ -1953,8 +1945,6 @@ Phase 1 creates a secure tunnel used in Phase 2.
 ***
 
 ### 7.2 Authentication Methods
-
-(Page 51–52 )
 
 Authentication ensures:
 
@@ -2030,8 +2020,6 @@ flowchart TD
 
 ### 7.3 Encryption Algorithm Negotiation
 
-(Page 52 )
-
 During Phase 1, both parties negotiate which encryption algorithm will be used to secure IKE communication.
 
 Purpose:
@@ -2039,8 +2027,6 @@ Purpose:
 > To protect confidentiality of IKE exchanges.
 
 Common algorithms:
-
-***
 
 #### 7.3.1 DES (Data Encryption Standard)
 
@@ -2127,8 +2113,6 @@ flowchart TD
 
 ### 7.5 Main Mode
 
-(Page 53 & 56 )
-
 Main Mode is one method of performing IKE Phase 1 negotiation.
 
 It uses:
@@ -2168,8 +2152,6 @@ Secure but requires more exchanges.
 
 ### 7.6 Aggressive Mode
 
-(Page 54 & 56 )
-
 Aggressive Mode is an alternative to Main Mode.
 
 It:
@@ -2206,8 +2188,6 @@ Fewer messages → faster but less secure.
 
 ### 7.7 Establishment of IKE Security Association
 
-(Page 57 )
-
 After successful Phase 1:
 
 * A secure IKE Security Association (IKE SA) is established.
@@ -2238,7 +2218,7 @@ Phase 2 will create IPsec SAs for actual data protection.
 
 ***
 
-## Summary Table – IKE Phase 1
+### Summary Table – IKE Phase 1
 
 | Feature                | Description                            |
 | ---------------------- | -------------------------------------- |
@@ -2251,7 +2231,7 @@ Phase 2 will create IPsec SAs for actual data protection.
 
 ***
 
-## Important Exam Points
+### Important Exam Points
 
 1. IKE Phase 1 establishes a secure authenticated channel.
 2. It negotiates encryption algorithms and authentication methods.
@@ -2263,10 +2243,6 @@ Phase 2 will create IPsec SAs for actual data protection.
 8. Phase 1 results in creation of IKE SA.
 
 ***
-
-***
-
-(From **Unit-3: Proxy & VPNs**, Implementation of VPNs – pages 58–70 )
 
 ***
 
@@ -2609,8 +2585,6 @@ Commonly used for:
 
 ### 8.7 WireGuard Implementation
 
-(Page 69–70 )
-
 WireGuard is:
 
 * Modern
@@ -2674,7 +2648,7 @@ Advantages:
 
 ***
 
-## Complete VPN Implementation Overview
+### Complete VPN Implementation Overview
 
 ```mermaid
 flowchart LR
@@ -2688,7 +2662,7 @@ flowchart LR
 
 ***
 
-## Summary Table
+### Summary Table
 
 | VPN Type       | Used For            | Requires Client?   | Protocol Used       |
 | -------------- | ------------------- | ------------------ | ------------------- |
@@ -2701,7 +2675,7 @@ flowchart LR
 
 ***
 
-## Important Exam Points
+### Important Exam Points
 
 1. VPN implementation creates secure encrypted communication.
 2. Remote Access VPN requires client software.
