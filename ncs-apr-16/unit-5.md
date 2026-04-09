@@ -1471,3 +1471,812 @@ B --> C[Server]
   * strong security practices
 
 ***
+
+## 9. Zero-Day Vulnerability
+
+### 9.1 Definition
+
+#### 9.1.1 Unknown Vulnerability
+
+A zero-day vulnerability is a **previously unknown security flaw** in software, hardware, or systems that is **not yet discovered or patched by the vendor**.
+
+* “Zero-day” means:
+  * developers have **0 days to fix it**
+* It is unknown to:
+  * software developers
+  * security teams
+* But may already be known to attackers.
+
+***
+
+#### 9.1.2 Zero-Day Attack Concept
+
+* A zero-day attack occurs when attackers **exploit the vulnerability before a fix is available**.
+* Key characteristics:
+  * no existing patch
+  * no signature for detection
+  * highly difficult to defend
+
+```mermaid
+flowchart LR
+A[Unknown Vulnerability] --> B[Discovered by Attacker]
+B --> C[Exploit Created]
+C --> D[Attack Launched]
+D --> E[Patch Released Later]
+```
+
+***
+
+### 9.2 Risks
+
+#### 9.2.1 Exploitation Before Patch
+
+* Systems remain vulnerable because:
+  * no fix is available
+  * users are unaware of the threat
+* Attackers can:
+  * gain unauthorized access
+  * steal sensitive data
+  * compromise systems
+
+***
+
+#### 9.2.2 High Severity
+
+* Zero-day vulnerabilities are **extremely dangerous**.
+* Reasons:
+  * no immediate defense
+  * high success rate for attackers
+  * can affect large number of systems
+* Impact includes:
+  * data breaches
+  * system compromise
+  * widespread attacks
+
+***
+
+### 🔐 Additional Points (Full Coverage)
+
+* Often targeted in:
+  * operating systems
+  * web browsers
+  * enterprise software
+* Used in:
+  * advanced persistent threats (APTs)
+  * targeted cyber attacks
+* Lifecycle:
+  * vulnerability exists
+  * attacker discovers
+  * exploit used
+  * vendor releases patch
+
+***
+
+### 🔐 Prevention / Mitigation
+
+* Apply updates and patches as soon as available
+* Use **intrusion detection/prevention systems (IDS/IPS)**
+* Implement **behavior-based detection**
+* Use **least privilege principle**
+* Regularly monitor systems
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Zero-day = **unknown vulnerability**
+* Zero-day attack = **exploit before patch**
+* High risk due to:
+  * no defense
+  * no detection signatures
+* Requires:
+  * proactive security
+  * monitoring
+  * rapid patching
+
+***
+
+## 10. Network Diagram in Penetration Testing
+
+### 10.1 Definition
+
+#### 10.1.1 Visual Representation of Network
+
+A network diagram is a **graphical representation of a network structure**, showing how different devices and systems are connected.
+
+* Displays:
+  * network layout
+  * communication paths
+  * connections between devices
+* Used in penetration testing to:
+  * understand the target environment
+  * plan attack strategies
+
+***
+
+#### 10.1.2 Components (routers, servers, firewalls)
+
+A network diagram typically includes:
+
+* **Routers**
+  * connect different networks
+  * route traffic between them
+* **Servers**
+  * provide services (web, database, file servers)
+  * store and process data
+* **Firewalls**
+  * control traffic flow
+  * protect internal network
+* **Switches**
+  * connect devices within a network
+* **Clients**
+  * user devices (PCs, laptops, mobiles)
+* **Internet / External Network**
+  * represents external connectivity
+
+***
+
+### 10.2 Importance
+
+#### 10.2.1 Understanding Network Architecture
+
+* Helps security professionals:
+  * visualize network structure
+  * understand how systems interact
+* Provides insight into:
+  * data flow
+  * network segmentation
+  * security layers
+* Useful for:
+  * planning penetration tests
+  * identifying critical systems
+
+***
+
+#### 10.2.2 Identifying Weak Points
+
+* Helps locate:
+  * exposed systems
+  * misconfigured devices
+  * insecure connections
+* Enables identification of:
+  * entry points for attackers
+  * potential attack paths
+
+```mermaid
+flowchart LR
+A[Internet] --> B[Firewall]
+B --> C[Router]
+C --> D[Switch]
+D --> E[Server]
+D --> F[Client]
+```
+
+***
+
+### 🔄 Role in Penetration Testing Workflow
+
+* Used during:
+  * reconnaissance
+  * planning
+  * vulnerability analysis
+* Helps in:
+  * mapping attack surface
+  * prioritizing targets
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Network diagram = **visual map of network**
+* Includes:
+  * routers, servers, firewalls, clients
+* Important for:
+  * understanding structure
+  * identifying vulnerabilities
+* Used to:
+  * plan attacks
+  * analyze risks
+
+***
+
+## 11. Burp Suite Proxy
+
+### 11.1 Introduction
+
+#### 11.1.1 Definition
+
+Burp Suite is a widely used tool for **web application security testing** that acts as an **intercepting proxy** between a user’s browser and the web server.
+
+* It captures and analyzes HTTP/HTTPS traffic.
+* Allows testers to:
+  * inspect requests and responses
+  * modify data in transit
+
+***
+
+#### 11.1.2 Role in Web Security Testing
+
+* Acts as a **middle layer** between client and server.
+* Helps in:
+  * identifying vulnerabilities
+  * testing application behavior
+  * analyzing communication
+* Common use cases:
+  * detecting input validation flaws
+  * testing authentication mechanisms
+  * finding web vulnerabilities (SQLi, XSS)
+
+```mermaid
+flowchart LR
+A[Browser] --> B[Burp Suite Proxy]
+B --> C[Web Server]
+C --> B
+B --> A
+```
+
+***
+
+### 11.2 Features
+
+#### 11.2.1 Interception and Modification
+
+* Intercepts HTTP/HTTPS requests and responses.
+* Allows:
+  * viewing raw data
+  * modifying parameters before sending
+* Useful for:
+  * testing input validation
+  * bypassing restrictions
+
+***
+
+#### 11.2.2 Request and Response Tampering
+
+* Modify:
+  * form inputs
+  * headers
+  * cookies
+* Helps identify:
+  * security flaws
+  * improper validation
+* Example:
+  * changing user role in request
+
+***
+
+#### 11.2.3 Decoder Tool
+
+* Encodes and decodes data.
+* Supports formats like:
+  * Base64
+  * URL encoding
+* Useful for:
+  * analyzing encoded payloads
+  * understanding hidden data
+
+***
+
+#### 11.2.4 Extensions Tool
+
+* Allows adding plugins to extend functionality.
+* Provides:
+  * additional scanning tools
+  * automation capabilities
+* Supports integration with:
+  * third-party tools
+
+***
+
+#### 11.2.5 Repeater Tool
+
+* Allows sending the same request multiple times.
+* Used for:
+  * testing different inputs
+  * analyzing responses
+* Helps in:
+  * manual testing
+  * vulnerability verification
+
+***
+
+#### 11.2.6 Intruder Tool
+
+* Automates attacks by sending multiple payloads.
+* Used for:
+  * brute force attacks
+  * fuzzing inputs
+  * testing parameters
+* Supports:
+  * different attack types (sniper, cluster bomb)
+
+***
+
+### 🔄 Burp Suite Workflow
+
+```mermaid
+flowchart LR
+A[Intercept Request] --> B[Analyze Data]
+B --> C[Modify Request]
+C --> D[Send to Server]
+D --> E[Analyze Response]
+```
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Burp Suite = **intercepting proxy tool**
+* Used for:
+  * web security testing
+  * vulnerability analysis
+* Key features:
+  * interception
+  * tampering
+  * repeater
+  * intruder
+* Helps detect:
+  * SQL injection
+  * XSS
+  * authentication flaws
+
+***
+
+### 🔐 Best Practices
+
+* Use in authorized environments only
+* Combine with manual testing
+* Validate findings carefully
+* Keep tool updated
+
+***
+
+## 12. OWASP ZAP Proxy
+
+### 12.1 Introduction
+
+#### 12.1.1 Definition
+
+OWASP ZAP is an **open-source web application security testing tool** used to find vulnerabilities in web applications.
+
+* Works as an **intercepting proxy** between browser and server
+* Helps in:
+  * scanning web applications
+  * detecting security issues
+  * analyzing HTTP/HTTPS traffic
+
+***
+
+#### 12.1.2 OWASP Organization
+
+OWASP is a global organization focused on improving software security.
+
+* Provides:
+  * free security tools (like ZAP)
+  * security guidelines
+  * best practices
+* Known for:
+  * OWASP Top 10 (common web vulnerabilities)
+
+***
+
+### 12.2 Features
+
+#### 12.2.1 Automated Scanning
+
+* Automatically scans web applications for vulnerabilities.
+* Detects:
+  * SQL injection
+  * cross-site scripting (XSS)
+  * security misconfigurations
+* Useful for:
+  * quick security assessments
+  * beginners
+
+***
+
+#### 12.2.2 Manual Testing
+
+* Allows testers to manually inspect and manipulate requests.
+* Helps in:
+  * deeper analysis
+  * finding complex vulnerabilities
+* Provides better control than automated scanning.
+
+***
+
+#### 12.2.3 Active Scanning
+
+* Actively sends malicious payloads to test vulnerabilities.
+* Interacts directly with the application.
+* Can identify:
+  * exploitable weaknesses
+* More thorough but:
+  * may affect application performance
+
+***
+
+#### 12.2.4 Passive Scanning
+
+* Observes traffic without modifying it.
+* Detects:
+  * security issues without sending attacks
+* Safe and non-intrusive.
+
+***
+
+#### 12.2.5 Open Source Nature
+
+* Free and open-source tool.
+* Benefits:
+  * customizable
+  * community-supported
+  * regularly updated
+
+***
+
+### 🔄 OWASP ZAP Workflow
+
+```mermaid
+flowchart LR
+A[Browser] --> B[ZAP Proxy]
+B --> C[Web Application]
+C --> B
+B --> D[Scan & Analyze]
+D --> E[Vulnerability Report]
+```
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* OWASP ZAP = **open-source security testing tool**
+* Developed by:
+  * OWASP organization
+* Features:
+  * automated scanning
+  * manual testing
+  * active + passive scanning
+* Used for:
+  * detecting web vulnerabilities
+  * improving application security
+
+***
+
+### 🔐 Best Practices
+
+* Use both:
+  * automated + manual testing
+* Validate scan results
+* Regularly update tool
+* Use in authorized environments only
+
+***
+
+## 13. Post-Exploitation
+
+### 13.1 Maintaining Access
+
+#### 13.1.1 Persistence Techniques
+
+* Maintaining access means ensuring **continued control over a compromised system** even after initial exploitation.
+* Attackers (or testers in controlled environments) use persistence techniques to:
+  * avoid losing access
+  * monitor system activity
+  * perform further actions later
+* Common persistence techniques:
+  * **Backdoors**
+    * hidden access mechanisms
+  * **Creating new user accounts**
+    * especially with admin privileges
+  * **Modifying startup scripts/services**
+    * ensures access after reboot
+  * **Scheduled tasks**
+    * automatically execute malicious scripts
+  * **Registry modifications (Windows)**
+    * maintain persistence
+* Risks:
+  * long-term unauthorized access
+  * continuous data theft
+  * system compromise
+
+```mermaid
+flowchart LR
+A[Initial Exploit] --> B[Install Backdoor]
+B --> C[Maintain Access]
+C --> D[Repeated Access Over Time]
+```
+
+***
+
+### 13.2 Pivoting
+
+#### 13.2.1 Expanding Attack Scope
+
+* Pivoting is the process of using a **compromised system as a stepping stone** to attack other systems in the network.
+* Purpose:
+  * expand reach inside network
+  * access internal systems not directly exposed
+* Example:
+  * attacker compromises one machine → uses it to scan internal network
+
+***
+
+#### 13.2.2 Lateral Movement
+
+* Lateral movement refers to **moving from one system to another within the same network**.
+* Techniques:
+  * credential reuse
+  * exploiting trust relationships
+  * using shared resources
+* Goal:
+  * gain access to:
+    * sensitive systems
+    * databases
+    * servers
+
+```mermaid
+flowchart LR
+A[Initial Compromise] --> B[Internal System Access]
+B --> C[Lateral Movement]
+C --> D[Multiple Systems Compromised]
+```
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Post-exploitation occurs **after initial access**
+* Two main activities:
+  * maintaining access (persistence)
+  * pivoting (expanding attack scope)
+* Lateral movement allows:
+  * deeper network compromise
+* Critical phase for:
+  * assessing impact
+  * understanding real-world attack scenarios
+
+***
+
+### 🔐 Prevention Measures
+
+* Monitor system activity continuously
+* Use strong access controls
+* Implement network segmentation
+* Use multi-factor authentication
+* Regularly audit user accounts and permissions
+
+***
+
+## 14. Documentation and Reporting (Detailed)
+
+### 14.1 Vulnerability Details
+
+#### 14.1.1 Vulnerability Identifier
+
+* A unique identifier assigned to each vulnerability.
+* Examples:
+  * internal ID (e.g., VULN-001)
+  * external IDs (e.g., CVE numbers)
+* Helps in:
+  * tracking vulnerabilities
+  * referencing issues in reports
+
+***
+
+#### 14.1.2 Description
+
+* Provides a clear explanation of the vulnerability.
+* Includes:
+  * what the vulnerability is
+  * how it occurs
+  * why it is a problem
+* Should be:
+  * simple for management
+  * detailed for technical teams
+
+***
+
+#### 14.1.3 Location / Affected Component
+
+* Specifies where the vulnerability exists.
+* Examples:
+  * specific server
+  * application module
+  * API endpoint
+  * network device
+* Helps in:
+  * identifying affected assets
+  * targeting fixes
+
+***
+
+#### 14.1.4 Risk Level
+
+* Indicates severity of vulnerability.
+* Common levels:
+  * Critical
+  * High
+  * Medium
+  * Low
+* Based on:
+  * exploitability
+  * potential impact
+
+***
+
+### 14.2 Technical Details
+
+#### 14.2.1 CVE ID
+
+* CVE (Common Vulnerabilities and Exposures) is a **standard identifier** for known vulnerabilities.
+* Format:
+  * CVE-YYYY-XXXX
+* Helps in:
+  * referencing known issues
+  * accessing vulnerability databases
+
+***
+
+#### 14.2.2 Attack Vector
+
+* Describes how the vulnerability can be exploited.
+* Examples:
+  * network-based
+  * local access
+  * web-based input
+* Helps understand:
+  * attack path
+  * required conditions
+
+***
+
+#### 14.2.3 Impact
+
+* Describes consequences of exploitation.
+* Examples:
+  * data leakage
+  * system compromise
+  * privilege escalation
+* Helps prioritize fixes.
+
+***
+
+### 14.3 Evidence and Proof
+
+#### 14.3.1 Evidence Collection
+
+* Collect proof of vulnerability existence.
+* Includes:
+  * logs
+  * screenshots
+  * captured packets
+  * tool outputs
+* Ensures:
+  * credibility of findings
+  * reproducibility
+
+***
+
+#### 14.3.2 Proof-of-Concept
+
+* Demonstrates how the vulnerability can be exploited.
+* May include:
+  * sample payloads
+  * step-by-step exploitation
+* Shows:
+  * real impact
+  * severity of issue
+
+```mermaid
+flowchart LR
+A[Vulnerability Found] --> B[Collect Evidence]
+B --> C[Create PoC]
+C --> D[Demonstrate Exploit]
+```
+
+***
+
+### 14.4 Remediation Details
+
+#### 14.4.1 Recommendations
+
+* Suggested actions to fix the vulnerability.
+* Examples:
+  * apply patches
+  * update configurations
+  * improve input validation
+
+***
+
+#### 14.4.2 Affected Versions
+
+* Lists versions of software impacted.
+* Helps:
+  * identify vulnerable systems
+  * prioritize updates
+
+***
+
+#### 14.4.3 Mitigation Techniques
+
+* Temporary or permanent solutions.
+* Examples:
+  * firewall rules
+  * disabling vulnerable features
+  * applying security controls
+
+***
+
+#### 14.4.4 Dependencies
+
+* Identifies related components affecting vulnerability.
+* Examples:
+  * libraries
+  * third-party software
+* Important for:
+  * complete resolution
+  * avoiding partial fixes
+
+***
+
+### 14.5 Compliance and Risk
+
+#### 14.5.1 Regulatory Compliance
+
+* Checks if vulnerability affects compliance with standards:
+* Examples:
+  * PCI DSS
+  * HIPAA
+  * ISO standards
+* Helps organizations:
+  * meet legal requirements
+  * avoid penalties
+
+***
+
+#### 14.5.2 Ease of Exploitation
+
+* Indicates how easily the vulnerability can be exploited.
+* Factors:
+  * required skill level
+  * availability of tools
+  * access requirements
+* Categories:
+  * Easy
+  * Moderate
+  * Difficult
+
+***
+
+### 🔄 Reporting Workflow
+
+```mermaid
+flowchart LR
+A[Identify Vulnerability] --> B[Document Details]
+B --> C[Collect Evidence]
+C --> D[Analyze Risk]
+D --> E[Provide Remediation]
+E --> F[Final Report]
+```
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Documentation is critical in penetration testing
+* Report must include:
+  * vulnerability details
+  * technical data
+  * evidence
+  * remediation
+* Good report =
+  * clear
+  * structured
+  * actionable
+
+***
+
+<h2 align="center"><a data-footnote-ref href="#user-content-fn-1">END</a></h2>
+
+[^1]: This page ends here.
