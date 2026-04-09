@@ -697,3 +697,777 @@ D --> E[Plan Exploitation]
 * Regularly update software
 
 ***
+
+## 5. Vulnerability Analysis
+
+### 5.1 Overview of Vulnerability
+
+#### 5.1.1 Definition
+
+A vulnerability is a **weakness or flaw in a system, network, or application** that can be exploited by an attacker to gain unauthorized access or cause damage.
+
+* Exists due to:
+  * software bugs
+  * misconfigurations
+  * poor security practices
+* Can lead to:
+  * data breaches
+  * system compromise
+  * service disruption
+
+***
+
+#### 5.1.2 Types of Vulnerabilities
+
+* **Network Vulnerabilities**
+  * weak firewall rules
+  * open ports
+* **System Vulnerabilities**
+  * outdated operating systems
+  * unpatched software
+* **Application Vulnerabilities**
+  * SQL injection
+  * cross-site scripting (XSS)
+* **Human Vulnerabilities**
+  * weak passwords
+  * social engineering
+
+***
+
+### 5.2 Classification of Vulnerabilities
+
+#### 5.2.1 Vendor-Originated
+
+* Caused by flaws in **software or hardware provided by vendors**.
+* Examples:
+  * software bugs
+  * unpatched security flaws
+* Solution:
+  * apply updates and patches
+
+***
+
+#### 5.2.2 System Administration-Originated
+
+* Caused by **misconfiguration or poor management**.
+* Examples:
+  * weak firewall settings
+  * default credentials
+  * unnecessary services running
+* Solution:
+  * proper configuration
+  * regular audits
+
+***
+
+#### 5.2.3 User-Originated
+
+* Caused by **user behavior or mistakes**.
+* Examples:
+  * weak passwords
+  * clicking malicious links
+  * ignoring security policies
+* Solution:
+  * user awareness and training
+
+***
+
+### 5.3 Vulnerability Scanners
+
+#### 5.3.1 Role of Scanners
+
+Vulnerability scanners are tools used to **identify security weaknesses automatically**.
+
+* They:
+  * scan systems and networks
+  * detect known vulnerabilities
+  * generate reports
+* Examples:
+  * Nessus
+  * OpenVAS
+
+***
+
+#### 5.3.2 Automated Security Auditing
+
+* Scanners perform automated checks for:
+  * missing patches
+  * insecure configurations
+  * outdated software
+* Benefits:
+  * fast and efficient
+  * reduces manual effort
+  * improves accuracy
+* Limitation:
+  * may produce false positives/negatives
+
+***
+
+### 5.4 Types of Vulnerability Scanners
+
+#### 5.4.1 Network Vulnerability Scanners
+
+* Scan entire networks to identify:
+  * open ports
+  * exposed services
+* Example:
+  * Nessus
+
+***
+
+#### 5.4.2 Web Application Scanners
+
+* Detect vulnerabilities in web apps.
+* Examples:
+  * SQL injection
+  * XSS
+  * authentication flaws
+
+***
+
+#### 5.4.3 Host-Based Scanners
+
+* Installed on individual systems.
+* Scan:
+  * OS vulnerabilities
+  * installed software
+
+***
+
+#### 5.4.4 Database Scanners
+
+* Focus on database systems.
+* Detect:
+  * weak configurations
+  * unauthorized access
+
+***
+
+#### 5.4.5 Mobile Application Scanners
+
+* Analyze mobile apps for:
+  * insecure data storage
+  * weak authentication
+
+***
+
+#### 5.4.6 Cloud-Based Scanners
+
+* Scan cloud infrastructure.
+* Identify:
+  * misconfigured cloud services
+  * exposed storage
+
+***
+
+#### 5.4.7 Passive Scanners
+
+* Monitor network traffic without active scanning.
+* Do not interact directly with systems.
+* Useful for:
+  * continuous monitoring
+  * low-risk environments
+
+***
+
+### 🔄 Vulnerability Analysis Workflow
+
+```mermaid
+flowchart LR
+A[Identify Assets] --> B[Scan Systems]
+B --> C[Detect Vulnerabilities]
+C --> D[Analyze Risk]
+D --> E[Report Findings]
+```
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Vulnerability = **security weakness**
+* Types:
+  * network, system, application, human
+* Classification:
+  * vendor, admin, user
+* Scanners:
+  * automate detection
+  * improve efficiency
+* Important to combine:
+  * automated tools + manual analysis
+
+***
+
+### 🔐 Best Practices
+
+* Regular vulnerability scanning
+* Timely patch updates
+* Secure configurations
+* User awareness training
+* Continuous monitoring
+
+***
+
+## 6. False Positive and False Negative
+
+### 6.1 False Negative
+
+#### 6.1.1 Definition
+
+A False Negative occurs when a **vulnerability actually exists**, but the scanning tool or analysis **fails to detect it**.
+
+* The system is **incorrectly marked as secure**.
+* The vulnerability remains hidden and unaddressed.
+
+***
+
+#### 6.1.2 Security Risks
+
+* Highly dangerous because:
+  * real threats go unnoticed
+  * attackers can exploit undetected vulnerabilities
+* Leads to:
+  * false sense of security
+  * increased risk of breaches
+* Example:
+  * a vulnerable service is running, but scanner does not report it
+
+```mermaid
+flowchart LR
+A[Actual Vulnerability] --> B[Scanner Misses It]
+B --> C[Marked as Safe]
+C --> D[Attack Possible]
+```
+
+***
+
+### 6.2 False Positive
+
+#### 6.2.1 Definition
+
+A False Positive occurs when a **scanner reports a vulnerability that does not actually exist**.
+
+* The system is **incorrectly flagged as vulnerable**.
+* Leads to unnecessary investigation.
+
+***
+
+#### 6.2.2 Impact on Analysis
+
+* Causes:
+  * wasted time and resources
+  * unnecessary fixes or patches
+* May lead to:
+  * confusion in reports
+  * reduced trust in scanning tools
+* Example:
+  * scanner flags a secure system as vulnerable
+
+```mermaid
+flowchart LR
+A[No Vulnerability] --> B[Scanner Reports Issue]
+B --> C[Marked as Vulnerable]
+C --> D[Unnecessary Effort]
+```
+
+***
+
+### 🔄 Comparison (Important)
+
+| Aspect     | False Negative             | False Positive                   |
+| ---------- | -------------------------- | -------------------------------- |
+| Meaning    | Missed vulnerability       | Incorrect vulnerability reported |
+| Risk Level | High (dangerous)           | Low (inconvenience)              |
+| Impact     | Security breach possible   | Wasted effort                    |
+| Example    | Vulnerability not detected | Non-existent issue flagged       |
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* **False Negative = dangerous**
+  * real vulnerability missed
+* **False Positive = misleading**
+  * fake vulnerability reported
+* Best approach:
+  * combine automated tools with manual verification
+  * validate scan results carefully
+
+***
+
+## 7. Exploitation Phase
+
+### 7.1 Exploitation Techniques
+
+#### 7.1.1 Password Cracking
+
+Password cracking is the process of **recovering or guessing passwords** to gain unauthorized access.
+
+* Common methods:
+  * **Brute Force Attack**
+    * tries all possible combinations
+  * **Dictionary Attack**
+    * uses a list of common passwords
+  * **Credential Stuffing**
+    * uses leaked credentials
+* Targets:
+  * user accounts
+  * admin panels
+  * network services
+* Risks:
+  * unauthorized access
+  * data theft
+
+***
+
+#### 7.1.2 SQL Injection
+
+SQL Injection is an attack where malicious SQL queries are **inserted into input fields** to manipulate a database.
+
+* Occurs when:
+  * input validation is weak
+* Attacker can:
+  * bypass authentication
+  * retrieve sensitive data
+  * modify or delete records
+
+Example:
+
+```sql
+' OR '1'='1
+```
+
+* This can trick a login system into granting access.
+
+```mermaid
+flowchart LR
+A[User Input Field] --> B[Malicious SQL Query]
+B --> C[Database Executes Query]
+C --> D[Unauthorized Access]
+```
+
+***
+
+#### 7.1.3 Buffer Overflow
+
+Buffer overflow occurs when a program writes **more data into a buffer than it can hold**.
+
+* Causes:
+  * improper memory handling
+* Results:
+  * overwriting adjacent memory
+  * execution of malicious code
+* Can lead to:
+  * system crashes
+  * remote code execution
+
+***
+
+### 7.2 Privilege Escalation
+
+#### 7.2.1 Gaining Higher Access
+
+Privilege escalation is the process of **increasing access rights** after initial compromise.
+
+* Types:
+  * **Vertical escalation**
+    * user → admin
+  * **Horizontal escalation**
+    * one user → another user
+* Techniques:
+  * exploiting system vulnerabilities
+  * abusing misconfigured permissions
+
+***
+
+#### 7.2.2 System Control
+
+* After escalation, attacker can:
+  * gain full control of system
+  * access sensitive data
+  * modify system settings
+* Possible actions:
+  * install malware
+  * create backdoors
+  * disable security controls
+
+```mermaid
+flowchart LR
+A[Initial Access] --> B[Exploit Weakness]
+B --> C[Privilege Escalation]
+C --> D[Admin Control]
+```
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Exploitation phase = **using vulnerabilities to gain access**
+* Common techniques:
+  * password cracking
+  * SQL injection
+  * buffer overflow
+* Privilege escalation:
+  * increases access level
+  * leads to full system control
+
+***
+
+### 🔐 Prevention Measures
+
+* Use strong passwords and MFA
+* Validate and sanitize inputs
+* Apply secure coding practices
+* Regularly update and patch systems
+* Implement least privilege principle
+
+***
+
+## 8. Common Network Vulnerabilities
+
+### 8.1 Open Ports and Services
+
+#### 8.1.1 Description
+
+* Open ports indicate **active services** running on a system.
+* Unnecessary or exposed services increase attack surface.
+* Attackers scan ports to find:
+  * vulnerable services
+  * outdated software
+
+***
+
+#### 8.1.2 Prevention
+
+* Close unused ports
+* Disable unnecessary services
+* Use firewalls to restrict access
+* Regularly audit open ports
+
+***
+
+### 8.2 Weak Passwords
+
+#### 8.2.1 Description
+
+* Weak passwords are:
+  * short
+  * predictable
+  * reused across systems
+* Easily cracked using:
+  * brute force
+  * dictionary attacks
+
+***
+
+#### 8.2.2 Prevention
+
+* Use strong passwords (length + complexity)
+* Enable multi-factor authentication (MFA)
+* Enforce password policies
+* Avoid password reuse
+
+***
+
+### 8.3 Misconfigured Firewalls
+
+#### 8.3.1 Description
+
+* Improper firewall settings may:
+  * allow unauthorized traffic
+  * expose internal systems
+* Examples:
+  * open all ports
+  * weak rule configurations
+
+***
+
+#### 8.3.2 Prevention
+
+* Define strict firewall rules
+* Allow only necessary traffic
+* Regularly review configurations
+* Use intrusion detection/prevention systems
+
+***
+
+### 8.4 Outdated Software
+
+#### 8.4.1 Description
+
+* Old software contains **known vulnerabilities**.
+* Attackers exploit unpatched systems.
+
+***
+
+#### 8.4.2 Prevention
+
+* Regularly update software
+* Apply security patches
+* Use automated patch management
+
+***
+
+### 8.5 Insecure Wireless Networks
+
+#### 8.5.1 Description
+
+* Weak Wi-Fi security:
+  * no encryption
+  * weak passwords
+* Allows unauthorized access.
+
+***
+
+#### 8.5.2 Prevention
+
+* Use WPA3/WPA2 encryption
+* Disable WPS
+* Use strong passwords
+* Monitor connected devices
+
+***
+
+### 8.6 Network Sniffing Vulnerability
+
+#### 8.6.1 Description
+
+* Data transmitted in **unencrypted form** can be intercepted.
+* Attackers use sniffing tools to capture sensitive data.
+
+***
+
+#### 8.6.2 Prevention
+
+* Use encryption (HTTPS, SSL/TLS)
+* Use VPN
+* Avoid unsecured networks
+
+***
+
+### 8.7 Man-in-the-Middle Attacks
+
+#### 8.7.1 Description
+
+* Attacker intercepts communication between two parties.
+* Can:
+  * read data
+  * modify data
+
+***
+
+#### 8.7.2 Prevention
+
+* Use encrypted communication (HTTPS)
+* Implement secure authentication
+* Use VPN
+
+```mermaid
+flowchart LR
+A[User] --> B[Attacker]
+B --> C[Server]
+```
+
+***
+
+### 8.8 Denial-of-Service (DoS) Vulnerabilities
+
+#### 8.8.1 Description
+
+* Systems can be overwhelmed with excessive traffic.
+* Causes service unavailability.
+
+***
+
+#### 8.8.2 Prevention
+
+* Use rate limiting
+* Deploy load balancers
+* Use DDoS protection services
+
+***
+
+### 8.9 Protocol Vulnerabilities
+
+#### 8.9.1 Description
+
+* Weaknesses in network protocols (e.g., HTTP, FTP).
+* Examples:
+  * lack of encryption
+  * insecure authentication
+
+***
+
+#### 8.9.2 Prevention
+
+* Use secure protocols (HTTPS, SFTP)
+* Disable insecure protocols
+* Update protocol configurations
+
+***
+
+### 8.10 Web Application Vulnerabilities
+
+#### 8.10.1 Description
+
+* Flaws in web applications:
+  * SQL injection
+  * XSS
+  * authentication bypass
+
+***
+
+#### 8.10.2 Prevention
+
+* Validate user input
+* Use secure coding practices
+* Perform regular testing
+
+***
+
+### 8.11 Physical Security Weaknesses
+
+#### 8.11.1 Description
+
+* Lack of physical protection of devices.
+* Examples:
+  * unlocked server rooms
+  * unauthorized physical access
+
+***
+
+#### 8.11.2 Prevention
+
+* Restrict physical access
+* Use locks and surveillance
+* Implement access control systems
+
+***
+
+### 8.12 Social Engineering
+
+#### 8.12.1 Description
+
+* Manipulating users to reveal sensitive information.
+* Examples:
+  * phishing
+  * impersonation
+
+***
+
+#### 8.12.2 Prevention
+
+* User awareness training
+* Verify identities
+* Avoid sharing sensitive data
+
+***
+
+### 8.13 Insufficient Logging and Monitoring
+
+#### 8.13.1 Description
+
+* Lack of proper logs prevents detection of attacks.
+* Security incidents go unnoticed.
+
+***
+
+#### 8.13.2 Prevention
+
+* Enable logging
+* Monitor network activity
+* Use SIEM tools
+
+***
+
+### 8.14 Default Configurations
+
+#### 8.14.1 Description
+
+* Systems left with default settings:
+  * default passwords
+  * default ports
+* Easily exploited.
+
+***
+
+#### 8.14.2 Prevention
+
+* Change default credentials
+* Customize configurations
+* Harden systems
+
+***
+
+### 8.15 Insecure Network Architecture
+
+#### 8.15.1 Description
+
+* Poor network design:
+  * no segmentation
+  * flat network structure
+* Increases attack impact.
+
+***
+
+#### 8.15.2 Prevention
+
+* Use network segmentation
+* Implement firewalls and VLANs
+* Design secure architecture
+
+***
+
+### 8.16 VPN Vulnerabilities
+
+#### 8.16.1 Description
+
+* Weak VPN configurations:
+  * weak encryption
+  * outdated protocols
+* Can expose remote access.
+
+***
+
+#### 8.16.2 Prevention
+
+* Use strong encryption
+* Update VPN software
+* Enable multi-factor authentication
+
+***
+
+### 8.17 IoT Device Vulnerabilities
+
+#### 8.17.1 Description
+
+* IoT devices often lack strong security.
+* Issues:
+  * default credentials
+  * outdated firmware
+
+***
+
+#### 8.17.2 Prevention
+
+* Change default settings
+* Update firmware regularly
+* Isolate IoT devices on separate network
+
+***
+
+### 🔐 Key Points (Exam Ready)
+
+* Vulnerabilities exist in:
+  * network
+  * systems
+  * users
+* Common causes:
+  * weak passwords
+  * misconfigurations
+  * outdated systems
+* Prevention requires:
+  * regular updates
+  * monitoring
+  * strong security practices
+
+***
