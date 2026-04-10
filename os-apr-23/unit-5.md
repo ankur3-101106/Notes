@@ -2711,3 +2711,1020 @@ flowchart TD
 
 ***
 
+## 11. Locality of Reference
+
+Locality of Reference is a **fundamental principle** used in memory systems to improve performance.
+
+> Programs tend to access **a small portion of memory repeatedly over a short period of time**
+
+This concept is the **foundation of caching, paging, and virtual memory**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    Program --> FewMemoryLocations
+    FewMemoryLocations --> RepeatedAccess
+```
+
+👉 Instead of accessing entire memory, programs focus on **specific regions**
+
+***
+
+### 11.1 Concept
+
+***
+
+#### 11.1.1 Definition
+
+> Locality of Reference is the tendency of a program to access **same or nearby memory locations repeatedly**
+
+**From PPT:**
+
+* Programs access **instructions whose addresses are near each other**
+
+***
+
+#### 🔍 Example
+
+*   Loop execution:
+
+    ```c
+    for(i = 0; i < 10; i++) {
+        sum += i;
+    }
+    ```
+
+👉 Same instructions executed repeatedly
+
+***
+
+#### 11.1.2 Importance
+
+Locality of Reference helps in:
+
+**1. Cache Memory**
+
+* Frequently used data stored in cache
+
+**2. Virtual Memory**
+
+* Only required pages loaded
+
+**3. Performance Optimization**
+
+* Reduces memory access time
+
+***
+
+#### 🔁 Effect
+
+```mermaid
+flowchart LR
+    Locality --> Cache
+    Cache --> FasterExecution
+```
+
+***
+
+### 11.2 Types of Locality
+
+There are **two main types**
+
+***
+
+### 11.2.1 Temporal Locality
+
+> If a memory location is accessed now, it is likely to be accessed again soon
+
+***
+
+#### 🔍 Example
+
+```c
+int x = 5;
+print(x);
+print(x);
+```
+
+👉 Same variable `x` used repeatedly
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart TD
+    Access1 --> Access2 --> Access3
+```
+
+***
+
+#### Key Idea:
+
+* Reuse of **same data/instruction**
+
+***
+
+### 11.2.2 Spatial Locality
+
+> If a memory location is accessed, nearby locations are likely to be accessed soon
+
+***
+
+#### 🔍 Example
+
+```c
+int arr[5] = {1,2,3,4,5};
+for(i=0;i<5;i++)
+    print(arr[i]);
+```
+
+👉 Accessing **adjacent memory locations**
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart LR
+    A[Location 100] --> B[101] --> C[102]
+```
+
+***
+
+#### Key Idea:
+
+* Access to **neighboring memory locations**
+
+***
+
+### 🔥 Final Summary
+
+| Type     | Meaning                   | Example         |
+| -------- | ------------------------- | --------------- |
+| Temporal | Same location reused      | Loop variable   |
+| Spatial  | Nearby locations accessed | Array traversal |
+
+***
+
+### 🎯 Important Exam Points
+
+* Definition of locality (very important)
+* Temporal vs Spatial (comparison asked frequently)
+* Relation with:
+  * Cache
+  * Virtual memory
+
+***
+
+### 💡 Memory Trick
+
+👉 **T-S**
+
+* T → Temporal → Time (same data again)
+* S → Spatial → Space (nearby data)
+
+***
+
+## 12. Demand Paging
+
+Demand Paging is a **virtual memory technique** where pages are loaded into memory **only when they are needed**.
+
+> Instead of loading entire program, OS loads pages **on demand**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    Program --> Disk
+    Disk -->|Needed Page| RAM
+```
+
+👉 Only required pages are brought into memory
+
+***
+
+### 12.1 Concept of Demand Paging
+
+***
+
+#### 12.1.1 Lazy Loading
+
+> Pages are loaded **only when they are first accessed**
+
+**Key Idea:**
+
+* Do not load unused pages
+* Load page **only when required**
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Program Starts] --> B[Page Needed?]
+    B -->|Yes| C[Load Page]
+    B -->|No| D[Do Nothing]
+```
+
+***
+
+**Benefits:**
+
+* Saves memory
+* Faster program startup
+* Efficient resource usage
+
+***
+
+#### 12.1.2 Page Fault Generation
+
+> A **page fault** occurs when a process tries to access a page that is **not in memory**
+
+***
+
+#### 🔁 Condition
+
+* Page table entry has:
+  * **Valid bit = 0 (invalid)**
+
+👉 Page is not loaded → page fault occurs
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[CPU Requests Page] --> B{Page in Memory?}
+    B -->|No| C[Page Fault]
+    B -->|Yes| D[Continue Execution]
+```
+
+***
+
+**From PPT:**
+
+* Page fault occurs when page is **not available in memory**
+
+***
+
+### 12.2 Page Fault Handling
+
+When a page fault occurs, OS must **handle it properly**
+
+***
+
+#### 12.2.1 Valid/Invalid Check
+
+> First, OS checks whether the memory reference is valid
+
+**Cases:**
+
+* ❌ Invalid reference → terminate process
+* ✅ Valid but not loaded → continue handling
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Page Fault] --> B{Valid Address?}
+    B -->|No| C[Terminate Process]
+    B -->|Yes| D[Load Page]
+```
+
+***
+
+#### 12.2.2 Load from Disk
+
+> Required page is loaded from **secondary storage (disk)**
+
+**Steps:**
+
+1. Find free frame
+2. Read page from disk
+3. Load into memory
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Find Free Frame] --> B[Read from Disk]
+    B --> C[Load into RAM]
+```
+
+***
+
+#### 12.2.3 Restart Instruction
+
+> After loading page, execution resumes
+
+**Key Point:**
+
+* Instruction that caused fault is **restarted**
+
+***
+
+#### 🔁 Complete Handling Flow
+
+```mermaid
+flowchart TD
+    A[CPU Request] --> B[Check Page Table]
+    B -->|Not in Memory| C[Page Fault]
+    C --> D[Check Validity]
+    D -->|Valid| E[Load Page from Disk]
+    E --> F[Update Page Table]
+    F --> G[Restart Instruction]
+    D -->|Invalid| H[Terminate Process]
+```
+
+***
+
+### 🔥 Final Summary
+
+| Concept       | Meaning                     |
+| ------------- | --------------------------- |
+| Demand Paging | Load pages only when needed |
+| Page Fault    | Page not in memory          |
+| Valid Bit     | Indicates presence          |
+| Disk          | Stores pages                |
+
+***
+
+### 🎯 Important Exam Points
+
+* Definition of demand paging
+* Page fault concept (very common)
+* Steps in page fault handling (diagram important)
+* Valid/invalid bit usage
+
+***
+
+### 💡 Memory Trick
+
+👉 **D-P-R**
+
+* D → Demand
+* P → Page Fault
+* R → Restart
+
+***
+
+## 13. Page Replacement
+
+When all frames in memory are full and a new page needs to be loaded, the OS must **replace an existing page**.
+
+> Page Replacement decides **which page to remove** to make space for a new one
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    A[Memory Full] --> B[Need New Page]
+    B --> C[Select Victim Page]
+    C --> D[Replace with New Page]
+```
+
+***
+
+### 13.1 Concept
+
+***
+
+#### 13.1.1 Need for Replacement
+
+> Page replacement is required when **no free frames are available**
+
+**Situation:**
+
+* All frames are occupied
+* New page request occurs
+
+👉 OS must:
+
+* Remove an existing page
+* Load required page
+
+***
+
+#### 🔍 Example
+
+* Frames = 3
+* Pages in memory = P1, P2, P3
+* New page request = P4
+
+👉 One of P1, P2, P3 must be removed
+
+***
+
+#### 13.1.2 Swap In / Swap Out
+
+**🔹 Swap Out**
+
+> Remove page from memory → send to disk
+
+**🔹 Swap In**
+
+> Load new page from disk → into memory
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart LR
+    OldPage --> Disk
+    Disk --> NewPage
+```
+
+***
+
+### 13.2 Replacement Steps
+
+***
+
+#### 13.2.1 Find Victim Page
+
+> Select a page to be removed from memory
+
+**Criteria (depends on algorithm):**
+
+* Oldest page
+* Least recently used
+* Least frequently used
+
+👉 This step is **most important**
+
+***
+
+#### 13.2.2 Replace Page
+
+> Replace victim page with required page
+
+***
+
+#### 🔁 Example
+
+```mermaid
+flowchart TD
+    A[Frame: P1] --> B[Replace with P4]
+```
+
+***
+
+**If victim page is modified:**
+
+* Must be written back to disk
+
+***
+
+#### 13.2.3 Update Tables
+
+> Update system data structures
+
+**Updates required:**
+
+* Page table
+* Frame allocation
+* Status bits
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Replace Page] --> B[Update Page Table]
+    B --> C[Update Frame Info]
+    C --> D[Resume Execution]
+```
+
+***
+
+### 🔥 Final Summary
+
+| Step | Action           |
+| ---- | ---------------- |
+| 1    | Find victim page |
+| 2    | Replace page     |
+| 3    | Update tables    |
+
+***
+
+### 🎯 Important Exam Points
+
+* Need for page replacement (very common)
+* Swap in vs swap out
+* Steps of replacement (must remember)
+* Victim page concept
+
+***
+
+### 💡 Memory Trick
+
+👉 **F-R-U**
+
+* F → Find victim
+* R → Replace
+* U → Update
+
+***
+
+## 14. Page Replacement Algorithms
+
+When memory is full, the OS uses **page replacement algorithms** to decide **which page to remove**.
+
+> Goal: **Minimize page faults and improve performance**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    A[Page Fault] --> B[Choose Algorithm]
+    B --> C[Select Victim Page]
+    C --> D[Replace Page]
+```
+
+***
+
+### 14.1 FIFO (First-In First-Out)
+
+***
+
+#### 14.1.1 Concept
+
+> Replace the page that entered memory **first**
+
+**Idea:**
+
+* Oldest page is removed
+
+***
+
+#### 🔁 Example
+
+```mermaid
+flowchart LR
+    P1 --> P2 --> P3 --> ReplaceP1
+```
+
+***
+
+#### 14.1.2 Drawbacks
+
+* May remove frequently used pages
+* Leads to **Belady’s Anomaly**
+  * More frames → more page faults (unexpected)
+
+***
+
+### 14.2 Optimal Algorithm
+
+***
+
+#### 14.2.1 Concept
+
+> Replace the page that will **not be used for the longest time in future**
+
+***
+
+#### 🔁 Idea
+
+```mermaid
+flowchart TD
+    Current --> FuturePrediction --> ReplaceFarthestPage
+```
+
+***
+
+#### 14.2.2 Limitation
+
+* Requires **future knowledge**
+* Not implementable in real systems
+
+👉 Used as **benchmark**
+
+***
+
+### 14.3 LRU (Least Recently Used)
+
+***
+
+#### 14.3.1 Concept
+
+> Replace the page that was **least recently used**
+
+***
+
+#### 🔁 Idea
+
+```mermaid
+flowchart TD
+    Recent --> Old --> ReplaceOld
+```
+
+***
+
+#### 14.3.2 Implementation
+
+**Methods:**
+
+1. **Counter Method**
+   * Track usage time
+2. **Stack Method**
+   * Maintain order of usage
+
+***
+
+**Advantage:**
+
+* Good performance
+* Based on locality
+
+**Disadvantage:**
+
+* Expensive to implement
+
+***
+
+### 14.4 LRU Approximation
+
+***
+
+#### 14.4.1 Reference Bit
+
+> Use a **reference bit (R)** to track usage
+
+**Idea:**
+
+* If page used → R = 1
+* If not used → R = 0
+
+**Replacement:**
+
+* Choose page with R = 0
+
+***
+
+### 14.5 NRU (Not Recently Used)
+
+***
+
+#### 14.5.1 Classification
+
+Pages are divided into **4 classes** based on:
+
+* R → Reference bit
+* M → Modified bit
+
+***
+
+#### 🔁 Classes
+
+| Class | R | M | Meaning                |
+| ----- | - | - | ---------------------- |
+| 0     | 0 | 0 | Not used, not modified |
+| 1     | 0 | 1 | Not used, modified     |
+| 2     | 1 | 0 | Used, not modified     |
+| 3     | 1 | 1 | Used, modified         |
+
+***
+
+#### 14.5.2 Replacement Strategy
+
+> Replace page from **lowest class first**
+
+**Priority:**
+
+Class 0 → Class 1 → Class 2 → Class 3
+
+***
+
+### 14.6 Second Chance Algorithm
+
+***
+
+#### 14.6.1 Improvement over FIFO
+
+> Enhances FIFO using reference bit
+
+***
+
+#### 🔁 Working
+
+1. Check oldest page
+2. If R = 0 → replace
+3. If R = 1 → give second chance
+   * Set R = 0
+   * Move page to end
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Check Oldest Page] --> B{R = 0?}
+    B -->|Yes| C[Replace]
+    B -->|No| D[Set R=0 & Move]
+    D --> A
+```
+
+***
+
+### 14.7 NFU (Not Frequently Used)
+
+***
+
+#### 14.7.1 Frequency Counting
+
+> Replace page with **lowest usage count**
+
+***
+
+#### 🔁 Idea
+
+* Each page has a counter
+* Increment counter when page is used
+* Replace page with smallest counter
+
+***
+
+#### Advantages:
+
+* Considers usage frequency
+
+#### Disadvantages:
+
+* Old pages may remain forever
+* Does not consider recency
+
+***
+
+### 🔥 Final Summary
+
+| Algorithm     | Idea                | Advantage        | Disadvantage     |
+| ------------- | ------------------- | ---------------- | ---------------- |
+| FIFO          | Oldest page         | Simple           | Poor performance |
+| Optimal       | Future use          | Best result      | Not practical    |
+| LRU           | Least recently used | Good             | Costly           |
+| NRU           | Class-based         | Simple           | Approximation    |
+| Second Chance | FIFO + R bit        | Better than FIFO | Slight overhead  |
+| NFU           | Frequency-based     | Tracks usage     | Ignores recency  |
+
+***
+
+### 🎯 Important Exam Points
+
+* FIFO vs LRU vs Optimal (very common)
+* Belady’s Anomaly (important)
+* NRU classification table
+* Second Chance working
+* Algorithm comparison
+
+***
+
+### 💡 Memory Trick
+
+👉 **F-O-L-N-S-N**
+
+* F → FIFO
+* O → Optimal
+* L → LRU
+* N → NRU
+* S → Second Chance
+* N → NFU
+
+***
+
+## 15. Additional Concepts
+
+These concepts are important for understanding **performance and optimization in paging systems**.
+
+***
+
+### 15.1 Dirty Pages
+
+***
+
+#### 15.1.1 Definition
+
+> A **dirty page** is a page in memory that has been **modified after being loaded from disk**
+
+**Key Idea:**
+
+* Original copy exists on disk
+* Memory copy is updated
+* Disk copy becomes **outdated**
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart LR
+    DiskPage --> RAMPage
+    RAMPage --> Modified
+```
+
+***
+
+#### 15.1.2 Role
+
+Dirty pages affect **page replacement decisions**
+
+**Case 1: Clean Page**
+
+* Not modified
+* Can be removed directly
+
+**Case 2: Dirty Page**
+
+* Modified
+* Must be written back to disk
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Page Replacement] --> B{Dirty Page?}
+    B -->|Yes| C[Write to Disk]
+    B -->|No| D[Remove Directly]
+```
+
+***
+
+### 15.2 Dirty Bit
+
+***
+
+#### 15.2.1 Modified Bit
+
+> Dirty bit (or modified bit) indicates whether a page has been changed
+
+**Values:**
+
+| Bit | Meaning                   |
+| --- | ------------------------- |
+| 0   | Page not modified (clean) |
+| 1   | Page modified (dirty)     |
+
+***
+
+#### 🔁 Working
+
+```mermaid
+flowchart TD
+    A[Page Accessed] --> B{Modified?}
+    B -->|Yes| C[Dirty Bit = 1]
+    B -->|No| D[Dirty Bit = 0]
+```
+
+***
+
+#### 15.2.2 Write-back Decision
+
+> Dirty bit helps OS decide whether to **write page back to disk**
+
+**Rule:**
+
+* Dirty bit = 1 → write back
+* Dirty bit = 0 → discard
+
+***
+
+#### 🔁 Decision Flow
+
+```mermaid
+flowchart TD
+    A[Evict Page] --> B{Dirty Bit?}
+    B -->|1| C[Write to Disk]
+    B -->|0| D[Remove]
+```
+
+***
+
+### 15.3 Performance Metrics
+
+***
+
+### 15.3.1 Page Fault Rate
+
+> Page fault rate is the **frequency of page faults during execution**
+
+***
+
+#### Formula:
+
+```
+Page Fault Rate = Number of Page Faults / Total Memory Accesses
+```
+
+***
+
+#### 🔍 Example:
+
+```
+Page Faults = 50
+Total Accesses = 1000
+
+Rate = 50 / 1000 = 0.05 (5%)
+```
+
+***
+
+#### Importance:
+
+* Lower fault rate → better performance
+* High fault rate → system slowdown
+
+***
+
+### 15.3.2 Effective Access Time (EAT)
+
+> EAT is the **average time taken to access memory**, considering page faults
+
+***
+
+#### Formula:
+
+```
+EAT = (1 - p) × Memory Access Time + p × Page Fault Time
+```
+
+Where:
+
+* p = page fault rate
+
+***
+
+#### 🔍 Example:
+
+```
+Memory Access = 100 ns
+Page Fault Time = 8 ms (8,000,000 ns)
+p = 0.01
+
+EAT = (0.99 × 100) + (0.01 × 8,000,000)
+    = 99 + 80,000
+    = 80,099 ns
+```
+
+***
+
+#### 🔁 Insight
+
+👉 Even small page fault rate → huge performance impact
+
+***
+
+### 🔥 Final Summary
+
+| Concept         | Meaning                    |
+| --------------- | -------------------------- |
+| Dirty Page      | Modified page              |
+| Dirty Bit       | Indicates modification     |
+| Page Fault Rate | Frequency of faults        |
+| EAT             | Average memory access time |
+
+***
+
+### 🎯 Important Exam Points
+
+* Dirty page vs clean page
+* Dirty bit role (very common)
+* Page fault rate formula
+* EAT calculation (numerical important)
+
+***
+
+### 💡 Memory Trick
+
+👉 **D-D-P-E**
+
+* D → Dirty Page
+* D → Dirty Bit
+* P → Page Fault Rate
+* E → Effective Access Time
+
+***
+
+<h2 align="center"><a data-footnote-ref href="#user-content-fn-1">END</a></h2>
+
+[^1]: This is the end.
