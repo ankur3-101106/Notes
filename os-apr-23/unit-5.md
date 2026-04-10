@@ -1376,3 +1376,1338 @@ flowchart LR
 
 ***
 
+## 6. Paging
+
+Paging is a **non-contiguous memory allocation technique** that eliminates external fragmentation by dividing memory into fixed-size units.
+
+> Instead of allocating one large block, memory is divided into **pages and frames**
+
+***
+
+### 6.1 Paging Concept
+
+***
+
+#### 6.1.1 Pages and Frames
+
+* **Page** → Fixed-size block of logical memory (program side)
+* **Frame** → Fixed-size block of physical memory (RAM side)
+
+**Key Rule:**
+
+> **Page size = Frame size**
+
+***
+
+#### 🔁 Visualization
+
+```mermaid
+flowchart LR
+    P1[Page 0] --> F1[Frame 5]
+    P2[Page 1] --> F2[Frame 2]
+    P3[Page 2] --> F3[Frame 8]
+```
+
+***
+
+#### 6.1.2 Equal Size Requirement
+
+> Pages and frames must be of **equal size**
+
+**Why?**
+
+* Simplifies mapping
+* Avoids fragmentation complexity
+
+**Benefit:**
+
+* Eliminates **external fragmentation**
+
+***
+
+### 6.2 Paging Operation
+
+***
+
+#### 6.2.1 Page-to-Frame Mapping
+
+> Each page of a process is mapped to any available frame in memory
+
+**Key Idea:**
+
+* Pages can be placed **anywhere in RAM**
+
+***
+
+#### 🔁 Mapping Example
+
+```mermaid
+flowchart LR
+    Page0 --> Frame3
+    Page1 --> Frame7
+    Page2 --> Frame1
+```
+
+***
+
+#### 6.2.2 Non-contiguous Allocation
+
+> Pages of a process are stored in **different locations in memory**
+
+**Advantage:**
+
+* Efficient memory usage
+* No need for contiguous space
+
+***
+
+#### 🔁 Comparison
+
+| Technique  | Allocation      |
+| ---------- | --------------- |
+| Contiguous | One block       |
+| Paging     | Multiple blocks |
+
+***
+
+### 6.3 Address Structure in Paging
+
+***
+
+#### 6.3.1 Page Number
+
+> Identifies **which page** in logical memory
+
+* Used as index in **page table**
+
+***
+
+#### 6.3.2 Offset
+
+> Identifies **location within the page**
+
+***
+
+#### 🔁 Logical Address Format
+
+```
+Logical Address = Page Number + Offset
+```
+
+***
+
+#### Example:
+
+```
+Logical Address = 13-bit
+Page Size = 4KB (2^12)
+
+→ Page Number = upper bits
+→ Offset = lower 12 bits
+```
+
+***
+
+### 6.4 Page Table
+
+***
+
+#### 6.4.1 Structure
+
+> Page table stores mapping between pages and frames
+
+**Each entry contains:**
+
+* Frame number
+* Status bits (valid/invalid, protection)
+
+***
+
+#### 🔁 Page Table Example
+
+| Page No | Frame No |
+| ------- | -------- |
+| 0       | 5        |
+| 1       | 2        |
+| 2       | 8        |
+
+***
+
+#### 6.4.2 Logical → Physical Mapping
+
+**Process:**
+
+1. Extract page number
+2. Look up page table
+3. Get frame number
+4. Combine with offset
+
+***
+
+#### 🔁 Translation
+
+```mermaid
+flowchart TD
+    A[Logical Address] --> B[Page Number + Offset]
+    B --> C[Page Table Lookup]
+    C --> D[Frame Number]
+    D --> E[Physical Address]
+```
+
+***
+
+### 6.5 Page Allocation
+
+***
+
+#### 6.5.1 Page Placement
+
+> Pages can be placed in **any free frame**
+
+**No restriction:**
+
+* Frames do not need to be contiguous
+
+***
+
+#### 6.5.2 Frame Allocation
+
+> OS allocates frames to processes
+
+**Strategies:**
+
+* Equal allocation
+* Proportional allocation
+* Priority-based allocation
+
+***
+
+### 6.6 Steps to Determine Address Location
+
+***
+
+#### 6.6.1 Page Number Calculation
+
+> Divide logical address by page size
+
+```
+Page Number = Address / Page Size
+```
+
+***
+
+#### 6.6.2 Frame Identification
+
+> Use page number to find frame number from page table
+
+***
+
+#### 6.6.3 Offset Addition
+
+> Add offset to frame base address
+
+***
+
+#### 🔁 Complete Address Translation
+
+```mermaid
+flowchart TD
+    A[Logical Address] --> B[Divide into Page + Offset]
+    B --> C[Find Frame from Page Table]
+    C --> D[Combine Frame + Offset]
+    D --> E[Physical Address]
+```
+
+***
+
+#### 🔍 Example
+
+```
+Page Size = 1000
+Logical Address = 3450
+
+Page Number = 3
+Offset = 450
+
+If Page 3 → Frame 7
+
+Physical Address = 7000 + 450 = 7450
+```
+
+***
+
+### 🔥 Final Summary
+
+| Concept    | Meaning                   |
+| ---------- | ------------------------- |
+| Page       | Logical memory unit       |
+| Frame      | Physical memory unit      |
+| Page Table | Mapping structure         |
+| Offset     | Position inside page      |
+| Paging     | Non-contiguous allocation |
+
+***
+
+### 🎯 Important Exam Points
+
+* Page vs Frame (definition)
+* Address structure (Page + Offset)
+* Page table working (very important)
+* Numerical problems (address translation)
+* Advantage: removes external fragmentation
+
+***
+
+### 💡 Memory Trick
+
+👉 **P-F-O-T**
+
+* P → Page
+* F → Frame
+* O → Offset
+* T → Table
+
+***
+
+## 7. Hardware Support for Paging
+
+Paging requires **hardware support** to perform fast and efficient address translation.\
+Without hardware, paging would be too slow due to frequent memory lookups.
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart LR
+    CPU[Logical Address] --> HW[Hardware Support]
+    HW --> RAM[Physical Address]
+```
+
+***
+
+### 7.1 Page Table Implementation
+
+Page table stores mapping from **page → frame**, but where is it stored?
+
+***
+
+#### 7.1.1 Register-based
+
+> Page table is stored in **CPU registers**
+
+**Features:**
+
+* Very fast access
+* Suitable for **small page tables**
+
+**Limitations:**
+
+* Limited size
+* Expensive hardware
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart LR
+    CPU --> Registers --> PhysicalAddress
+```
+
+***
+
+#### 7.1.2 Memory-based
+
+> Page table is stored in **main memory**
+
+**Features:**
+
+* Can handle large page tables
+* More practical approach
+
+**Problem:**
+
+* Requires **2 memory accesses**:
+  1. Access page table
+  2. Access actual data
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Logical Address] --> B[Page Table in Memory]
+    B --> C[Frame Number]
+    C --> D[Actual Data]
+```
+
+***
+
+### ⚠️ Problem
+
+👉 Memory-based page table = **slow**\
+👉 Solution = **TLB**
+
+***
+
+### 7.2 Translation Lookaside Buffer (TLB)
+
+***
+
+#### 7.2.1 Concept
+
+> TLB is a **high-speed cache** that stores recent page table entries
+
+**Purpose:**
+
+* Reduce memory access time
+* Avoid repeated page table lookup
+
+***
+
+#### 🔁 Working
+
+```mermaid
+flowchart TD
+    A[CPU Logical Address] --> B[Check TLB]
+    B -->|Hit| C[Get Frame Number]
+    B -->|Miss| D[Access Page Table]
+    D --> E[Update TLB]
+    E --> C
+    C --> F[Access Memory]
+```
+
+***
+
+#### 7.2.2 TLB Hit and Miss
+
+**🔹 TLB Hit**
+
+* Page entry found in TLB
+* Fast access
+
+**🔹 TLB Miss**
+
+* Entry not found
+* Need to access page table
+
+***
+
+#### 🔁 Comparison
+
+| Case     | Steps             | Speed  |
+| -------- | ----------------- | ------ |
+| TLB Hit  | 1 memory access   | Fast   |
+| TLB Miss | 2 memory accesses | Slower |
+
+***
+
+#### 7.2.3 Effective Access Time Calculation
+
+> Average time to access memory considering TLB hits and misses
+
+***
+
+#### Formula:
+
+```
+EAT = (Hit Ratio × Hit Time) + (Miss Ratio × Miss Time)
+```
+
+***
+
+#### Expanded Form:
+
+```
+EAT = h(TLB + Memory) + (1 - h)(TLB + 2 × Memory)
+```
+
+Where:
+
+* h = hit ratio
+
+***
+
+#### 🔍 Example:
+
+```
+Hit ratio = 0.8
+Memory access = 100 ns
+TLB access = 10 ns
+
+EAT = 0.8(10 + 100) + 0.2(10 + 200)
+    = 0.8(110) + 0.2(210)
+    = 88 + 42 = 130 ns
+```
+
+***
+
+### 7.3 TLB Features
+
+***
+
+#### 7.3.1 Associative Memory
+
+> TLB uses **associative (content-addressable) memory**
+
+**Features:**
+
+* Search entire TLB in parallel
+* Faster lookup than normal memory
+
+***
+
+#### 🔁 Working
+
+```mermaid
+flowchart LR
+    Input[Page Number] --> TLB
+    TLB -->|Match Found| Frame
+```
+
+***
+
+#### 7.3.2 Replacement Policy (LRU)
+
+> When TLB is full, entries must be replaced
+
+**Common Policy:**
+
+* **LRU (Least Recently Used)**
+
+**Idea:**
+
+* Remove least recently accessed entry
+
+***
+
+#### 7.3.3 Address Space Identifier (ASID)
+
+> ASID uniquely identifies processes in TLB
+
+**Purpose:**
+
+* Avoid flushing TLB on context switch
+
+**Benefit:**
+
+* Faster process switching
+* Improved performance
+
+***
+
+### 7.4 Memory Protection in Paging
+
+Paging also supports **memory protection mechanisms**
+
+***
+
+#### 7.4.1 Protection Bit
+
+> Defines access permissions for each page
+
+**Types:**
+
+* Read
+* Write
+* Execute
+
+**Example:**
+
+```mermaid
+flowchart TD
+    Page --> CheckPermission
+    CheckPermission -->|Allowed| Access
+    CheckPermission -->|Denied| Trap
+```
+
+***
+
+#### 7.4.2 Valid/Invalid Bit
+
+> Indicates whether a page is **valid or not**
+
+**Values:**
+
+* Valid → page is in memory
+* Invalid → page not in memory
+
+**Use:**
+
+* Detect **page faults**
+
+***
+
+#### 7.4.3 Page Table Length Register (PTLR)
+
+> Stores size of page table
+
+**Purpose:**
+
+* Ensures page number is within valid range
+
+**Protection:**
+
+```mermaid
+flowchart TD
+    A[Page Number] --> B{Within PTLR?}
+    B -->|Yes| C[Access Page Table]
+    B -->|No| D[Trap]
+```
+
+***
+
+### 🔥 Final Summary
+
+| Concept    | Meaning                   |
+| ---------- | ------------------------- |
+| Page Table | Stores page-frame mapping |
+| TLB        | Cache for page table      |
+| Hit        | Fast access               |
+| Miss       | Slow access               |
+| ASID       | Process identifier        |
+| PTLR       | Page table size limit     |
+
+***
+
+### 🎯 Important Exam Points
+
+* TLB working (very important)
+* Hit vs Miss
+* EAT formula (numerical asked frequently)
+* Associative memory concept
+* Protection bits and&#x20;
+* valid/invalid bit
+
+***
+
+### 💡 Memory Trick
+
+👉 **T-H-E-A-P**
+
+* T → TLB
+* H → Hit
+* E → EAT
+* A → ASID
+* P → PTLR
+
+***
+
+## 8. Segmentation
+
+Segmentation is a **memory management technique** that divides a program into **logical parts (segments)** instead of fixed-size blocks.
+
+> Unlike paging, segmentation reflects the **user’s view of memory**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    Program --> Code
+    Program --> Stack
+    Program --> Heap
+```
+
+👉 Program is divided based on **functionality**, not size
+
+***
+
+### 8.1 Segmentation Concept
+
+***
+
+#### 8.1.1 Logical Division (Code, Stack, Heap)
+
+> A program is divided into **logical segments**
+
+**Common Segments:**
+
+* **Code Segment** → Instructions
+* **Data Segment** → Variables
+* **Stack Segment** → Function calls
+* **Heap Segment** → Dynamic memory
+
+***
+
+#### 🔁 Example
+
+```mermaid
+flowchart LR
+    Code --> Data --> Stack --> Heap
+```
+
+***
+
+#### 8.1.2 User View of Memory
+
+> Segmentation matches how programmers think about memory
+
+**Key Idea:**
+
+* Memory is seen as:
+  * Functions
+  * Modules
+  * Objects
+
+👉 Not as continuous addresses
+
+***
+
+### 8.2 Addressing in Segmentation
+
+***
+
+#### 8.2.1 Segment Number
+
+> Identifies **which segment**
+
+* Acts as index in **segment table**
+
+***
+
+#### 8.2.2 Offset
+
+> Specifies location **within the segment**
+
+***
+
+#### 🔁 Logical Address Format
+
+```
+Logical Address = (Segment Number, Offset)
+```
+
+***
+
+#### Example:
+
+```
+(2, 150)
+→ Segment 2, offset 150
+```
+
+***
+
+### 8.3 Segment Table
+
+***
+
+#### 8.3.1 Base and Limit
+
+Each segment has:
+
+* **Base** → Starting physical address
+* **Limit** → Size of segment
+
+***
+
+#### 🔁 Segment Table Example
+
+| Segment | Base | Limit |
+| ------- | ---- | ----- |
+| 0       | 1000 | 400   |
+| 1       | 2000 | 300   |
+| 2       | 3000 | 500   |
+
+***
+
+#### 8.3.2 Address Translation
+
+**Steps:**
+
+1. Get segment number
+2. Check offset < limit
+3. Add base to offset
+
+***
+
+#### 🔁 Translation Flow
+
+```mermaid
+flowchart TD
+    A[(Segment, Offset)] --> B[Segment Table]
+    B --> C{Offset < Limit?}
+    C -->|No| D[Trap]
+    C -->|Yes| E[Add Base]
+    E --> F[Physical Address]
+```
+
+***
+
+#### Formula:
+
+```
+Physical Address = Base + Offset
+```
+
+***
+
+### 8.4 Hardware Implementation
+
+***
+
+#### 8.4.1 Mapping 2D → 1D Address
+
+> Segmentation converts **2D address → 1D physical address**
+
+**Logical Address:**
+
+* (Segment, Offset)
+
+**Physical Address:**
+
+* Single memory address
+
+***
+
+#### 🔁 Mapping
+
+```mermaid
+flowchart LR
+    Logical[(Segment, Offset)] --> Hardware
+    Hardware --> Physical[Physical Address]
+```
+
+***
+
+#### 8.4.2 Trap Handling
+
+> Trap occurs when offset exceeds segment limit
+
+***
+
+**Causes:**
+
+* Invalid offset
+* Access outside segment
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    A[Offset Check] --> B{Valid?}
+    B -->|No| C[Trap]
+    B -->|Yes| D[Continue Execution]
+```
+
+***
+
+### 8.5 Segmentation Features
+
+***
+
+#### 8.5.1 Advantages
+
+* Matches user/program view
+* Supports modular programming
+* Easy sharing of segments
+* Better protection
+
+***
+
+#### 8.5.2 Disadvantages
+
+* **External Fragmentation**
+* Complex memory management
+* Slower than paging
+
+***
+
+### 8.6 Segmentation vs Paging
+
+***
+
+#### 8.6.1 Differences
+
+| Feature       | Segmentation         | Paging          |
+| ------------- | -------------------- | --------------- |
+| Division      | Logical (code, data) | Fixed size      |
+| Size          | Variable             | Fixed           |
+| Address       | Segment + Offset     | Page + Offset   |
+| Fragmentation | External             | Internal        |
+| View          | User-oriented        | System-oriented |
+
+***
+
+#### 8.6.2 Use Cases
+
+**Segmentation:**
+
+* When program structure matters
+* Modular programming
+
+**Paging:**
+
+* Efficient memory utilization
+* OS-level management
+
+***
+
+### 🔥 Final Summary
+
+| Concept      | Meaning                 |
+| ------------ | ----------------------- |
+| Segment      | Logical unit            |
+| Base         | Starting address        |
+| Limit        | Size                    |
+| Offset       | Position in segment     |
+| Segmentation | Logical memory division |
+
+***
+
+### 🎯 Important Exam Points
+
+* Segment table (base + limit)
+* Address translation steps
+* Segmentation vs Paging (very common)
+* Advantages & disadvantages
+
+***
+
+### 💡 Memory Trick
+
+👉 **S-B-L-O**
+
+* S → Segment
+* B → Base
+* L → Limit
+* O → Offset
+
+***
+
+## 9. Advanced Page Table Structures
+
+Basic page tables can become **very large** for modern systems.\
+To solve this, advanced structures are used to **reduce memory usage and improve efficiency**.
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    A[Large Page Table Problem] --> B[Hierarchical Paging]
+    A --> C[Hashed Page Table]
+    A --> D[Inverted Page Table]
+```
+
+***
+
+### 9.1 Hierarchical Paging
+
+***
+
+#### 9.1.1 Multilevel Page Table
+
+> Break a large page table into **multiple smaller tables**
+
+**Idea:**
+
+* Instead of one big table → use **levels**
+* Only required parts are loaded
+
+***
+
+#### 🔁 Structure
+
+```mermaid
+flowchart TD
+    A[Logical Address] --> B[Page Directory]
+    B --> C[Page Table]
+    C --> D[Frame Number]
+```
+
+***
+
+**Key Points:**
+
+* Reduces memory usage
+* Suitable for large address spaces
+
+***
+
+#### 9.1.2 Address Division
+
+> Logical address is divided into multiple parts
+
+**Example (2-level paging):**
+
+```id="v9dn7p"
+Logical Address = Page Directory | Page Table | Offset
+```
+
+***
+
+#### 🔁 Breakdown
+
+| Part      | Purpose           |
+| --------- | ----------------- |
+| Directory | Select page table |
+| Table     | Select frame      |
+| Offset    | Locate data       |
+
+***
+
+#### 🔍 Example
+
+```id="xf5rvk"
+32-bit address:
+
+10 bits → Page Directory  
+10 bits → Page Table  
+12 bits → Offset
+```
+
+***
+
+### 9.2 Hashed Page Table
+
+***
+
+#### 9.2.1 Hash Function
+
+> Uses a **hash function** to map virtual address → page table entry
+
+**Idea:**
+
+* Apply hash on page number
+* Get index in hash table
+
+***
+
+#### 🔁 Working
+
+```mermaid
+flowchart TD
+    A[Virtual Page Number] --> B[Hash Function]
+    B --> C[Hash Table Entry]
+    C --> D[Frame Number]
+```
+
+***
+
+#### 9.2.2 Collision Handling
+
+> Multiple pages may map to same hash index
+
+**Solution:**
+
+* Use **linked list (chaining)**
+
+***
+
+#### 🔁 Collision Handling
+
+```mermaid
+flowchart TD
+    A[Index] --> B[Entry 1]
+    B --> C[Entry 2]
+    C --> D[Entry 3]
+```
+
+***
+
+**Key Points:**
+
+* Traverse list until match found
+* Adds some delay
+
+***
+
+### 9.3 Inverted Page Table
+
+***
+
+#### 9.3.1 Concept
+
+> Instead of one entry per page, store **one entry per frame**
+
+**Difference:**
+
+* Normal page table → per process
+* Inverted page table → **global for system**
+
+***
+
+#### 🔁 Structure
+
+```mermaid
+flowchart TD
+    Frame1 --> ProcessPage1
+    Frame2 --> ProcessPage2
+    Frame3 --> ProcessPage3
+```
+
+***
+
+**Entry contains:**
+
+* Process ID
+* Page number
+* Frame number
+
+***
+
+#### 9.3.2 Memory Optimization
+
+> Greatly reduces memory usage
+
+**Why?**
+
+* Only one entry per frame
+* Independent of number of processes
+
+***
+
+#### 🔍 Comparison
+
+| Type                | Entries |
+| ------------------- | ------- |
+| Normal Page Table   | Pages   |
+| Inverted Page Table | Frames  |
+
+***
+
+#### 9.3.3 Search Overhead
+
+> Finding a page is slower
+
+**Problem:**
+
+* Must search entire table
+
+**Solution:**
+
+* Use **hashing** to speed up search
+
+***
+
+#### 🔁 Search Process
+
+```mermaid
+flowchart TD
+    A[Virtual Address] --> B[Search Table]
+    B -->|Found| C[Frame]
+    B -->|Not Found| D[Page Fault]
+```
+
+***
+
+### 🔥 Final Summary
+
+| Structure  | Key Idea            | Advantage             | Disadvantage |
+| ---------- | ------------------- | --------------------- | ------------ |
+| Multilevel | Split table         | Saves memory          | More lookup  |
+| Hashed     | Use hash function   | Faster lookup         | Collision    |
+| Inverted   | One entry per frame | Very memory efficient | Slow search  |
+
+***
+
+### 🎯 Important Exam Points
+
+* Why advanced tables are needed (very important)
+* Multilevel paging structure
+* Hashed page table (collision handling)
+* Inverted page table (difference)
+* Comparison often asked
+
+***
+
+### 💡 Memory Trick
+
+👉 **M-H-I**
+
+* M → Multilevel
+* H → Hashed
+* I → Inverted
+
+***
+
+## 10. Virtual Memory
+
+Virtual Memory is a **key concept in modern operating systems** that allows programs to run even if they are **larger than the available physical memory (RAM)**.
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart LR
+    Program[Large Program] --> VM[Virtual Memory]
+    VM --> RAM[Part in RAM]
+    VM --> Disk[Part in Disk]
+```
+
+👉 Only required parts are loaded into RAM, rest stay on disk
+
+***
+
+### 10.1 Concept of Virtual Memory
+
+***
+
+#### 10.1.1 Definition
+
+> Virtual Memory is a technique that allows execution of programs that are **not completely loaded into main memory**
+
+**From PPT:**
+
+* It allows processes to execute even when **only a part is in RAM**
+
+***
+
+#### 10.1.2 Need for Virtual Memory
+
+**Problems without Virtual Memory:**
+
+* Programs are too large for RAM
+* Limited physical memory
+* Low multiprogramming
+
+***
+
+**Solution:**
+
+Virtual Memory:
+
+* Uses **secondary storage (disk)** as extension of RAM
+* Loads only required pages
+
+***
+
+#### 🔁 Example
+
+* Program size = 1GB
+* RAM available = 4GB
+
+👉 Only active pages are loaded → rest stored on disk
+
+***
+
+#### 10.1.3 Virtual Memory > Physical Memory
+
+> Virtual memory size can be **greater than physical memory**
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart TD
+    A[Virtual Memory (Large)] --> B[Physical Memory (Small)]
+    B --> C[Disk Storage]
+```
+
+***
+
+**Key Insight:**
+
+* RAM acts as **cache for disk memory**
+* OS manages movement between them
+
+***
+
+### 10.2 Advantages of Virtual Memory
+
+***
+
+#### 10.2.1 Multiprogramming Support
+
+* Allows multiple processes to run simultaneously
+* Improves CPU utilization
+
+**From PPT:**
+
+* Enables **more processes in memory**
+
+***
+
+#### 10.2.2 Efficient Memory Usage
+
+* Only required pages are loaded
+* Reduces memory wastage
+
+**Additional Benefits:**
+
+* Large programs can run
+* Better resource utilization
+* Faster execution for active parts
+
+***
+
+### 10.3 Disadvantages of Virtual Memory
+
+***
+
+#### 10.3.1 Performance Overhead
+
+> Switching between RAM and disk is slow
+
+**Reasons:**
+
+* Disk access is slower than RAM
+* Page faults increase delay
+
+***
+
+#### 🔁 Impact
+
+```mermaid
+flowchart TD
+    A[Page Fault] --> B[Load from Disk]
+    B --> C[Delay in Execution]
+```
+
+***
+
+#### 10.3.2 Disk Dependency
+
+> Virtual memory heavily depends on secondary storage
+
+**Problems:**
+
+* Requires large disk space
+* System slows down if disk is slow
+
+**From PPT:**
+
+* Performance depends on **disk speed**
+
+***
+
+### 🔥 Final Summary
+
+| Concept          | Meaning             |
+| ---------------- | ------------------- |
+| Virtual Memory   | Extension of RAM    |
+| Disk             | Secondary storage   |
+| Page Fault       | Missing page in RAM |
+| Multiprogramming | More processes run  |
+
+***
+
+### 🎯 Important Exam Points
+
+* Definition of virtual memory (very common)
+* Virtual vs physical memory
+* Advantages & disadvantages
+* Concept of page fault (linked topic)
+
+***
+
+### 💡 Memory Trick
+
+👉 **V-R-D**
+
+* V → Virtual Memory
+* R → RAM
+* D → Disk
+
+***
+
