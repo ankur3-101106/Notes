@@ -584,8 +584,7 @@ Basic COCOMO Model
 
 The estimation model is given by:
 
-![](../.gitbook/assets/unknown.png)\
-![](<../.gitbook/assets/unknown (1).png>)<br>
+$$\text{EFFORT} = a1 \times \text{(KLOC)}^{a2}\text{PM}$$
 
 Where:
 
@@ -721,22 +720,6 @@ Level–0 DFD (Context Diagram)
 
 This reflects real system interaction.
 
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-<br>
-
 ✔ Clean\
 ✔ Role-based\
 ✔ Single division\
@@ -760,11 +743,6 @@ ER Diagram (Correct Database Representation)
 
 This is the most important and must match your actual schema.
 
-\
-&#x20;
-
-<br>
-
 ✔ Attendance linked to timetable\
 ✔ Timetable linked to subject + faculty\
 ✔ Single division (no class table needed)
@@ -773,25 +751,7 @@ This matches your real project design.
 
 ***
 
-Structure Chart (Modular Architecture)                          &#x20;
-
-![](file:///C:/Users/Ankur/AppData/Local/Temp/msohtmlclip1/01/clip_image036.jpg)&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-&#x20;
-
-<br>
+Structure Chart (Modular Architecture)
 
 ✔ Clean module separation\
 ✔ Duplicate prevention included\
@@ -812,10 +772,6 @@ This matches your rule:
 ![](file:///C:/Users/Ankur/AppData/Local/Temp/msohtmlclip1/01/clip_image038.png)
 
 ***
-
-<br>
-
-![](file:///C:/Users/Ankur/AppData/Local/Temp/msohtmlclip1/01/clip_image040.png)
 
 <h2 align="center">Practical–7</h2>
 
