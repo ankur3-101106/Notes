@@ -1435,3 +1435,1632 @@ flowchart TD
 
 ***
 
+## 6. File System Implementation (Explained Clearly)
+
+File system implementation describes **how files are actually stored and managed internally** by the OS.
+
+> It involves structures on disk + structures in memory for efficient access
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    User --> FileSystem
+    FileSystem --> DiskStructures
+    FileSystem --> MemoryStructures
+```
+
+👉 OS uses both **disk + memory structures** to manage files efficiently
+
+***
+
+## 6.1 On-Disk Structures
+
+These structures are stored **permanently on disk**
+
+***
+
+### 6.1.1 Boot Control Block
+
+> Contains information needed to **boot the system**
+
+**Key Points:**
+
+* Located at beginning of disk
+* Contains bootstrap program
+* Loads OS into memory
+
+***
+
+### 6.1.2 Volume Control Block
+
+> Stores information about the entire file system (also called **superblock**)
+
+**Contains:**
+
+* Total number of blocks
+* Free block count
+* File system size
+* Pointer to free space
+
+***
+
+### 6.1.3 Directory Structure
+
+> Stores information about files and directories
+
+**Contains:**
+
+* File names
+* Locations
+* Attributes
+
+👉 Helps in **file organization and lookup**
+
+***
+
+### 6.1.4 File Control Block (FCB)
+
+> Contains metadata about a file
+
+***
+
+#### 🔍 FCB contains:
+
+* File name
+* Size
+* Location
+* Permissions
+* Timestamps
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart TD
+    File --> FCB --> DiskBlocks
+```
+
+👉 FCB acts like a **record for each file**
+
+***
+
+## 6.2 In-Memory Structures
+
+These structures exist **temporarily in RAM** for faster access
+
+***
+
+### 6.2.1 In-Memory Partition Table
+
+> Stores information about mounted file systems
+
+**Purpose:**
+
+* Tracks available partitions
+* Helps OS access different disks
+
+***
+
+### 6.2.2 Directory Cache
+
+> Stores recently accessed directory entries
+
+**Benefit:**
+
+* Faster file lookup
+* Reduces disk access
+
+***
+
+### 6.2.3 Open File Table
+
+> Tracks files currently opened by processes
+
+***
+
+#### Contains:
+
+* File pointer
+* Access mode
+* File status
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart TD
+    Process --> OpenFileTable --> File
+```
+
+👉 Avoids repeated disk access
+
+***
+
+## 6.3 Virtual File System (VFS)
+
+***
+
+### 6.3.1 Concept
+
+> VFS provides a **uniform interface for different file systems**
+
+***
+
+#### Example:
+
+* FAT
+* NTFS
+* EXT4
+
+👉 All accessed through same interface
+
+***
+
+#### 🔁 Architecture
+
+```mermaid
+flowchart TD
+    User --> VFS --> FAT
+    VFS --> NTFS
+    VFS --> EXT4
+```
+
+***
+
+### 6.3.2 Purpose
+
+* Supports multiple file systems
+* Provides abstraction
+* Simplifies OS design
+
+***
+
+### 🔥 Final Summary
+
+| Structure       | Purpose           |
+| --------------- | ----------------- |
+| Boot Block      | Start system      |
+| Volume Block    | File system info  |
+| Directory       | File organization |
+| FCB             | File metadata     |
+| Open File Table | Track open files  |
+| VFS             | Uniform interface |
+
+***
+
+### 🎯 Important Exam Points
+
+* FCB (very important)
+* On-disk vs In-memory structures
+* VFS concept (common theory question)
+* Directory cache & open file table
+
+***
+
+### 💡 Memory Trick
+
+👉 **B-V-D-F-O-V**
+
+* B → Boot block
+* V → Volume block
+* D → Directory
+* F → FCB
+* O → Open file table
+* V → VFS
+
+***
+
+### 🧠 Final Insight
+
+* Disk structures = **permanent storage**
+* Memory structures = **fast access support**
+* VFS = **universal interface**
+
+***
+
+## 7. File Protection and Security (Explained Clearly)
+
+File protection ensures that **only authorized users can access or modify files**.
+
+> It is essential for **data security, privacy, and system integrity**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    User --> CheckPermissions
+    CheckPermissions -->|Allowed| AccessFile
+    CheckPermissions -->|Denied| Reject
+```
+
+👉 OS controls **who can do what with a file**
+
+***
+
+### 7.1 Access Control
+
+***
+
+#### 7.1.1 Access Types
+
+These define **what operations are allowed on a file**
+
+**Common Access Types:**
+
+* **Read (R)** → View file content
+* **Write (W)** → Modify file
+* **Execute (X)** → Run file
+* **Append (A)** → Add data at end
+* **Delete (D)** → Remove file
+
+***
+
+#### 7.1.2 User Categories
+
+Users are grouped to manage permissions easily:
+
+* **Owner** → Creator of file
+* **Group** → Users in same group
+* **Others** → All remaining users
+
+***
+
+#### 🔍 Example
+
+| User   | Permission  |
+| ------ | ----------- |
+| Owner  | Read, Write |
+| Group  | Read        |
+| Others | No access   |
+
+***
+
+### 7.2 Protection Mechanisms
+
+***
+
+### 7.2.1 Access Control List (ACL)
+
+> ACL is a list that defines **permissions for each user**
+
+***
+
+#### 🔁 Structure
+
+```mermaid
+flowchart TD
+    File --> User1[User1: RW]
+    File --> User2[User2: R]
+    File --> User3[User3: No Access]
+```
+
+***
+
+#### Features:
+
+* Fine-grained control
+* Different permissions for different users
+
+***
+
+#### Advantages:
+
+* Flexible
+* Detailed security
+
+***
+
+#### Disadvantages:
+
+* Complex for large systems
+
+***
+
+### 7.2.2 Permission Bits
+
+> Permissions are stored as **bits (binary flags)**
+
+***
+
+#### Format (UNIX style):
+
+```
+rwx rwx rwx
+```
+
+* First → Owner
+* Second → Group
+* Third → Others
+
+***
+
+#### Example:
+
+```
+rwx r-x r--
+```
+
+* Owner → full access
+* Group → read + execute
+* Others → read only
+
+***
+
+#### Advantages:
+
+* Simple
+* Efficient
+
+***
+
+#### Disadvantages:
+
+* Less flexible than ACL
+
+***
+
+### 7.3 File Sharing
+
+***
+
+#### 7.3.1 Modes
+
+File sharing allows multiple users/processes to access files.
+
+**Types:**
+
+* **Read-only sharing**
+  * Multiple users can read
+* **Read-write sharing**
+  * Users can modify file
+
+***
+
+#### 🔁 Example
+
+```mermaid
+flowchart TD
+    User1 --> File
+    User2 --> File
+```
+
+***
+
+#### 7.3.2 Issues
+
+Sharing introduces problems:
+
+**1. Consistency Problem**
+
+* Multiple users modifying file → conflict
+
+**2. Synchronization Issue**
+
+* Need control mechanisms (locks)
+
+**3. Security Risk**
+
+* Unauthorized access
+
+***
+
+### 🔥 Final Summary
+
+| Concept         | Meaning               |
+| --------------- | --------------------- |
+| Access Types    | Operations allowed    |
+| User Categories | Owner, group, others  |
+| ACL             | Detailed permissions  |
+| Permission Bits | Simple permissions    |
+| File Sharing    | Multiple users access |
+
+***
+
+### 🎯 Important Exam Points
+
+* ACL vs Permission bits (very common)
+* Access types (short question)
+* User categories
+* File sharing issues
+
+***
+
+### 💡 Memory Trick
+
+👉 **A-U-P-S**
+
+* A → Access types
+* U → Users
+* P → Permissions
+* S → Sharing
+
+***
+
+### 🧠 Final Insight
+
+* Security = **who can access + what they can do**
+* ACL = detailed control
+* Permission bits = simple control
+
+***
+
+## 8. File System Performance (Explained Clearly)
+
+File system performance determines **how fast data can be read from or written to disk**.
+
+> Since disk operations are slow, optimizing them is **very important for overall system performance**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    Request --> DiskAccess
+    DiskAccess --> Delay
+    Optimization --> FasterAccess
+```
+
+👉 Goal = **reduce delay in disk access**
+
+***
+
+## 8.1 Performance Factors
+
+These factors directly affect how fast disk operations happen.
+
+***
+
+### 8.1.1 Disk Access Time
+
+> Total time required to **read/write data from disk**
+
+***
+
+#### Formula:
+
+```
+Disk Access Time = Seek Time + Rotational Latency + Transfer Time
+```
+
+***
+
+#### Components:
+
+* Seek Time
+* Rotational Latency
+* Transfer Time
+
+👉 Lower access time = better performance
+
+***
+
+### 8.1.2 Seek Time
+
+> Time taken by disk head to move to correct track
+
+***
+
+#### Key Points:
+
+* Largest component of delay
+* Depends on distance moved
+
+***
+
+#### 🔍 Example:
+
+* Moving from track 10 → track 200 → high seek time
+
+***
+
+### 8.1.3 Latency (Rotational Latency)
+
+> Time taken for disk to rotate and bring required sector under head
+
+***
+
+#### Key Points:
+
+* Depends on disk speed (RPM)
+* Faster disk → lower latency
+
+***
+
+#### 🔍 Example:
+
+* If disk spins at 7200 RPM → faster access
+
+***
+
+### 🧠 Insight
+
+👉 Most delay comes from:
+
+* Seek time
+* Latency
+
+***
+
+## 8.2 Optimization Techniques
+
+To improve performance, OS uses several techniques:
+
+***
+
+### 8.2.1 Caching
+
+> Frequently accessed data is stored in **fast memory (cache)**
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart LR
+    CPU --> Cache --> Disk
+```
+
+***
+
+#### Benefits:
+
+* Reduces disk access
+* Faster data retrieval
+
+***
+
+#### Example:
+
+* Recently opened file stored in cache
+
+***
+
+### 8.2.2 Buffering
+
+> Temporary storage used during data transfer
+
+***
+
+#### Purpose:
+
+* Smooth data flow
+* Reduce speed mismatch (CPU vs disk)
+
+***
+
+#### 🔁 Example
+
+```mermaid
+flowchart TD
+    Disk --> Buffer --> CPU
+```
+
+***
+
+#### Types:
+
+* Single buffering
+* Double buffering
+* Circular buffering
+
+***
+
+### 8.2.3 Disk Scheduling Impact
+
+> Order of disk requests affects performance
+
+***
+
+#### Idea:
+
+* Arrange requests to reduce head movement
+
+***
+
+#### 🔁 Example
+
+Without scheduling:
+
+```
+Requests: 10 → 200 → 20 → 180
+```
+
+With scheduling:
+
+```
+Optimized: 10 → 20 → 180 → 200
+```
+
+👉 Less movement → faster access
+
+***
+
+#### Common Algorithms:
+
+* FCFS
+* SSTF
+* SCAN
+
+***
+
+### 🔥 Final Summary
+
+| Factor      | Meaning                    |
+| ----------- | -------------------------- |
+| Seek Time   | Head movement time         |
+| Latency     | Rotation delay             |
+| Access Time | Total delay                |
+| Caching     | Store frequently used data |
+| Buffering   | Temporary storage          |
+| Scheduling  | Optimize request order     |
+
+***
+
+### 🎯 Important Exam Points
+
+* Disk access time formula (very important)
+* Seek time vs latency
+* Caching vs buffering
+* Role of disk scheduling
+
+***
+
+### 💡 Memory Trick
+
+👉 **S-L-C-B-S**
+
+* S → Seek time
+* L → Latency
+* C → Caching
+* B → Buffering
+* S → Scheduling
+
+***
+
+### 🧠 Final Insight
+
+* Disk is the **slowest component**
+* Performance improves by:
+  * Reducing head movement
+  * Reducing disk access
+  * Using memory efficiently
+
+***
+
+## 9. Disk Structure (Explained Clearly)
+
+Disk structure explains **how data is physically organized on storage devices (HDD/SSD)**.
+
+> Understanding disk structure helps in **efficient data storage and retrieval**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    Disk --> Platters --> Tracks --> Sectors --> Data
+```
+
+👉 Data is stored in a **hierarchical physical structure**
+
+***
+
+## 9.1 Disk Basics
+
+***
+
+### 9.1.1 Disk Concept
+
+> A disk is a **secondary storage device** used to store data permanently
+
+**Key Features:**
+
+* Non-volatile (data not lost on power off)
+* Large storage capacity
+* Slower than RAM
+
+***
+
+### 9.1.2 Storage Technologies
+
+#### 🔹 Magnetic Disks (HDD)
+
+<div align="center" data-with-frame="true"><img src="https://images.openai.com/static-rsc-4/Zjs2U-qLyKWD0phcWRR6Izpuo6hwrDbBshfgFnDFZzeaGJnR_-FmZcxNJnpe0dX-YngNPcZnO7GD890dYRiCuAQmDnAFtUawuu5wYdoumOBdIwVO5IAKwpczGRV39wpvCgz3apnhaZxvUBvBU5LMX3vtQCEs4q8oH1xRvIxO6SSmvoMrvoT5j2EkGCURyf11?purpose=fullsize" alt="Image"></div>
+
+![Image](https://images.openai.com/static-rsc-4/4qOClS0V_L1-IAy20Kr1g28TMT1VtZIKYJLorfYBCcGDI2nI6DtHnRhDPENt9QuBNJ4yKdtEuVMk7fUqf5v0NcjrTtDubzPZL2qkIByu3VZCWbv1xXwNa-3eIUaXj6Rh4nEJmlPY3169YcHhXWyUsPoziaiccxK6sCc_pn_zWiRN8pmZunoK4YTU7YmSSkZT?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/ORwsgng-C-IYcUJYCTSG4lRoUV8RVbOxdayS2scNddPkcHUF2VZD-sp5ZhsRYblb8Wd_VMj53svhdZDLmz0Ss26XLEArW9e0hEZGOLmUrvcprweaqnas1ajjRobDQVR7uFLpJADve6yzmg_3Pec7aBLrVnfBHWjZGSJpiRY0or0_z5z4w3UugwzJ9lKjs8Rs?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/Pow6Hg8-ZHSZveJp5PoBLPrMwXPgUunGTaM0hRm6WhEEQbAWpcj_1ULv5EbsNPYqn2-_5ivpEE32ZV7CXvNPyUzW_hxUe5gq4v7X98LEuwNAyyJc-CCmSRHYWuWU-K_8DXAlIlixepo6xcuevTP_jhzI6pjKml8bhxXdPYWJj4_EJY3ZfwVXva4HjlGpvljR?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/p-hZrS7CrLWGpdztbCiRKG082CRcHIqMccPMB7MIAmClc5NWJ53MJEC4bG3QWKZ_Z_fvR9zrKiRb__OzqG4A8o-4w9jHpPnMU1niTHiG95iIL8DIL1pS7Wi1onqLREzW99EyFHwR0btAZQkuk_7vrgsUMO6I1YzKrkXiS2S72bd8PM4nZEfsSxG1yRpQAtGp?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/HgHiciVtP1jnNeu4ySgeOOYFpKD50PCjFc3cJCoaIpKYGlxsDQH_6EubwtLlYKd4EBK0i9aKi59uSySHnPyjbLHhEVe-VYeSIpx25SQ8L_7aK94kNAorSFpXBubCqOSO7Ugtx7Ny-9pvSzZ7RsFvJU-kFmAR_XBVD94GemU8QeIZuAxUzT89OQ-HvqQ-adCc?purpose=fullsize)
+
+* Uses magnetic coating
+* Data stored using magnetism
+* Mechanical movement involved
+
+***
+
+#### 🔹 Solid State Drives (SSD)
+
+![Image](https://images.openai.com/static-rsc-4/K5PaZtvVRT_NawrlqmP44lBTI6P-iJmEtWOs5qGcsz4nCqFxslx1XCRgib2987MQt9afDaQAki7MnqLysF6iultjUC8iA-BxJJpAGo5X42siEEvHFrFzrBIwNeiOfQPsXSU708bJ4tFBASxVEbuG5YzjH40jZbl-7hfBC6vw2fKR2Kkbzfqe5677-zxeB-KU?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/c5x_DYMFTEXG3tyhlfHyu17ZNpunYMmZ5b73PuRj3DVm5OLv3RXejVIszi-7wUZERxPEP7wwqPEF8s_j-BNaS2T4k9iQPBkU0TSRaB5QK2xcxota2Ze2941qBmVg0DI7PeEUlA-Z9jSh3IEBk_SU62UeETWM1xbMAKhJIry4InOhZJx5Su4bkiuf69Ml6Odp?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/HMdbFd367cZi4pM-oq196Vi3OQHjdHl1lUF7LNEOnbE2k2qUOtyX06FokYOrqqtNfe1C4DiXPSPCWaaAy2I0Iw6VPMNmCHNR0CeZ7P5vrZiuAAiFyJ85d_8VyCS2a69F8NGb-bDa455VHb31YsfluyjU_QGHyVND81C6BC3D9QOuWjnIWQbJZxPDijzduyQP?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/sIrHenu-dQOz8_Wg137mFtx7Y79lqSb0HllccU2wXt7JRNfTONGvEokGnIzmqS6vawatakpmvPo6pgTt7W2PA1eaMFL6L2CTMovuov1t-pucNLzDTSUS-SsQwEFYq5B1j0d_f83hJBY3ZXbM02ihYs-ZdckBMfDp0oQyM0fPJ0IlLnz_4HkK21PjOTP_esc4?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/lQIujtGCv4rckkkH7D93huh5KvTNrBsrfR-JdBTuQQIOr7jlFv7pilx-nNTNdAWFkNQldjri8LtpJxN_t7SN3zmaj94gEpGE-WjAF16JszTrhbgWh3PdoEQlsHm5FNOTsnbLu4C3yTl5nLiTt5UNEVN0e8HyPHIW_URQ_IH5FZkbrV4FsH9MZTgcYEPd5Git?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/4XJ6DFTfOqj3wL_9-bagh7N8wDru19T6TKSRLp_WSxwnfpLGZc4TBX0cewZNVq-MKBfCHOoIrzVbmRUhWqwtI-ecJssaaZvkvTtxR5Kyl2HgwIQunwwRbrJCtsotfPeRPWxd1AUfvPXRp9VFKnIEgo64ElL3VOHf6B_WagwYy82TUVbfIcPq1ufUFeIBrN4-?purpose=fullsize)
+
+* Uses flash memory
+* No moving parts
+* Faster than HDD
+
+***
+
+### 🧠 Insight
+
+* HDD → cheaper, slower
+* SSD → faster, expensive
+
+***
+
+## 9.2 Disk Geometry
+
+Disk geometry describes **physical layout of disk**
+
+***
+
+### 9.2.1 Platters
+
+> Circular disks coated with magnetic material
+
+* Multiple platters stacked
+* Both sides used for storage
+
+***
+
+### 9.2.2 Tracks
+
+> Concentric circles on platter
+
+* Data stored along tracks
+
+***
+
+### 9.2.3 Sectors
+
+> Smallest unit of storage
+
+* Each track divided into sectors
+* Typically 512 bytes or 4KB
+
+***
+
+### 9.2.4 Cylinders
+
+> Set of tracks at same position across all platters
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart TD
+    Platter1 --> Track1
+    Platter2 --> Track1
+    Platter3 --> Track1
+```
+
+👉 All aligned tracks = cylinder
+
+***
+
+### 9.2.5 Clusters
+
+> Group of sectors treated as a unit
+
+* Used by file system
+* Improves efficiency
+
+***
+
+### 🧠 Insight
+
+* Sector → smallest physical unit
+* Cluster → logical unit used by OS
+
+***
+
+## 9.3 Disk Mapping
+
+***
+
+### 9.3.1 Logical Block Addressing (LBA)
+
+> Data is addressed using **linear block numbers**
+
+***
+
+#### 🔁 Concept
+
+```mermaid
+flowchart LR
+    Block0 --> Block1 --> Block2 --> Block3
+```
+
+👉 Simplifies addressing
+
+***
+
+### 9.3.2 Physical Mapping
+
+> Converts logical address → physical location
+
+***
+
+#### Mapping:
+
+* Logical → Cylinder
+* Cylinder → Track
+* Track → Sector
+
+***
+
+#### 🔁 Flow
+
+```mermaid
+flowchart TD
+    LogicalBlock --> Cylinder --> Track --> Sector
+```
+
+***
+
+### 🧠 Insight
+
+* LBA hides physical complexity
+* OS uses logical addressing
+
+***
+
+## 9.4 Disk Capacity
+
+***
+
+### 9.4.1 CHS Calculation
+
+> Disk capacity is calculated using:
+
+***
+
+#### Formula:
+
+```
+Capacity = Cylinders × Heads × Sectors × Bytes per Sector
+```
+
+***
+
+#### 🔍 Example:
+
+```
+Cylinders = 1000
+Heads = 4
+Sectors = 100
+Bytes = 512
+
+Capacity = 1000 × 4 × 100 × 512
+         = 204,800,000 bytes (~200 MB)
+```
+
+***
+
+### 🔥 Final Summary
+
+| Component | Meaning            |
+| --------- | ------------------ |
+| Platter   | Disk surface       |
+| Track     | Circular path      |
+| Sector    | Smallest unit      |
+| Cylinder  | Group of tracks    |
+| Cluster   | Group of sectors   |
+| LBA       | Logical addressing |
+
+***
+
+### 🎯 Important Exam Points
+
+* Disk geometry (diagram very important)
+* Sector vs cluster
+* LBA concept
+* CHS formula (numerical asked)
+
+***
+
+### 💡 Memory Trick
+
+👉 **P-T-S-C-C**
+
+* P → Platter
+* T → Track
+* S → Sector
+* C → Cylinder
+* C → Cluster
+
+***
+
+### 🧠 Final Insight
+
+* Disk structure = **physical organization**
+* OS uses logical abstraction (LBA)
+* Performance depends on geometry + access
+
+***
+
+## 10. Disk Scheduling (Explained Clearly)
+
+Disk scheduling decides **the order in which disk I/O requests are processed**.
+
+> Goal: **Minimize disk head movement → reduce seek time → improve performance**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    Requests --> SchedulingAlgorithm --> OptimizedOrder --> FasterAccess
+```
+
+👉 Better scheduling = faster disk performance
+
+***
+
+## 10.1 Disk Access Time
+
+Disk access time is the **total time to access data from disk**
+
+***
+
+### 10.1.1 Seek Time
+
+> Time taken to move disk head to correct track
+
+* Largest delay
+* Depends on distance
+
+***
+
+### 10.1.2 Rotational Latency
+
+> Time for disk to rotate and bring sector under head
+
+* Depends on disk speed (RPM)
+
+***
+
+### 10.1.3 Transfer Time
+
+> Time to actually read/write data
+
+* Usually small compared to others
+
+***
+
+### 🧠 Formula
+
+```
+Access Time = Seek Time + Latency + Transfer Time
+```
+
+***
+
+## 10.2 Scheduling Algorithms
+
+These algorithms decide **which request to serve next**
+
+***
+
+### 10.2.1 FCFS (First Come First Serve)
+
+> Serve requests in order of arrival
+
+***
+
+#### Example:
+
+```
+Queue: 10 → 180 → 40 → 120
+```
+
+***
+
+#### Advantages:
+
+* Simple
+* Fair
+
+#### Disadvantages:
+
+* High head movement
+* Poor performance
+
+***
+
+### 10.2.2 SSTF (Shortest Seek Time First)
+
+> Select request closest to current head position
+
+***
+
+#### Example:
+
+* Head at 50
+* Requests: 10, 40, 100
+
+👉 Choose 40
+
+***
+
+#### Advantages:
+
+* Reduced seek time
+
+#### Disadvantages:
+
+* **Starvation possible**
+
+***
+
+### 10.2.3 SCAN (Elevator Algorithm)
+
+> Head moves in one direction servicing requests, then reverses
+
+***
+
+#### 🔁 Movement
+
+```mermaid
+flowchart LR
+    Start --> Right --> End --> Left
+```
+
+***
+
+#### Advantages:
+
+* Better than FCFS
+* Reduced starvation
+
+***
+
+### 10.2.4 C-SCAN (Circular SCAN)
+
+> Head moves in one direction only, then jumps back
+
+***
+
+#### 🔁 Movement
+
+```mermaid
+flowchart LR
+    Start --> Right --> End --> Jump --> Start
+```
+
+***
+
+#### Advantages:
+
+* Uniform wait time
+
+***
+
+### 10.2.5 LOOK
+
+> Similar to SCAN but stops at last request (not disk end)
+
+***
+
+#### Advantage:
+
+* Avoids unnecessary movement
+
+***
+
+### 10.2.6 C-LOOK
+
+> Similar to C-SCAN but jumps only between requests
+
+***
+
+#### Advantage:
+
+* More efficient than C-SCAN
+
+***
+
+### 🧠 Insight
+
+| Algorithm | Idea             |
+| --------- | ---------------- |
+| FCFS      | Order-based      |
+| SSTF      | Closest request  |
+| SCAN      | Elevator         |
+| C-SCAN    | Circular         |
+| LOOK      | Optimized SCAN   |
+| C-LOOK    | Optimized C-SCAN |
+
+***
+
+## 10.3 Performance Metrics
+
+***
+
+### 10.3.1 Total Head Movement
+
+> Total distance moved by disk head
+
+* Lower movement → better performance
+
+***
+
+#### 🔍 Example:
+
+```
+Head moves: 50 → 100 → 20 → 150
+Total movement = sum of distances
+```
+
+***
+
+### 10.3.2 Throughput
+
+> Number of requests served per unit time
+
+* Higher throughput → better performance
+
+***
+
+### 10.3.3 Starvation
+
+> Some requests may never be served
+
+***
+
+#### Occurs in:
+
+* SSTF
+
+***
+
+#### Example:
+
+* Requests far from head are ignored repeatedly
+
+***
+
+### 🔥 Final Summary
+
+| Algorithm | Advantage      | Disadvantage    |
+| --------- | -------------- | --------------- |
+| FCFS      | Simple         | Slow            |
+| SSTF      | Fast           | Starvation      |
+| SCAN      | Balanced       | Slight delay    |
+| C-SCAN    | Uniform wait   | Jump overhead   |
+| LOOK      | Efficient      | Complex         |
+| C-LOOK    | Best optimized | Slight overhead |
+
+***
+
+### 🎯 Important Exam Points
+
+* FCFS vs SSTF vs SCAN (very common)
+* SCAN vs C-SCAN vs LOOK
+* Starvation concept
+* Total head movement numericals
+
+***
+
+### 💡 Memory Trick
+
+👉 **F-S-S-C-L-C**
+
+* F → FCFS
+* S → SSTF
+* S → SCAN
+* C → C-SCAN
+* L → LOOK
+* C → C-LOOK
+
+***
+
+### 🧠 Final Insight
+
+* Disk scheduling = **optimization problem**
+* Best practical:
+  * SCAN / LOOK
+* Avoid:
+  * SSTF (starvation risk)
+
+***
+
+## 11. Disk Management (Explained Clearly)
+
+Disk management deals with **how the OS initializes, organizes, and maintains disks**, including booting, reliability, and handling errors.
+
+> It ensures the system **starts correctly and stores data safely**
+
+***
+
+### 🧠 Core Idea
+
+```mermaid
+flowchart TD
+    PowerOn --> BootProcess --> OSLoaded --> DiskUsage
+```
+
+👉 Disk management starts from **booting → ends with reliable storage**
+
+***
+
+## 11.1 Booting Process
+
+***
+
+### 11.1.1 Bootstrap Program
+
+> A small program that **loads the operating system into memory**
+
+* Stored in ROM
+* Runs automatically when system starts
+
+***
+
+### 11.1.2 ROM (Read Only Memory)
+
+> Permanent memory that contains bootstrap code
+
+* Non-volatile
+* Cannot be easily modified
+
+***
+
+### 11.1.3 Boot Block
+
+> Special disk sector containing boot information
+
+* Located at start of disk
+* Helps in loading OS
+
+***
+
+### 🧠 Insight
+
+👉 Booting = **ROM → Disk → OS**
+
+***
+
+## 11.2 Boot Process Flow
+
+***
+
+### 🔁 Step-by-Step Flow
+
+```mermaid
+flowchart TD
+    A[Power ON] --> B[ROM executes]
+    B --> C[Load MBR]
+    C --> D[Load Boot Sector]
+    D --> E[Load OS into RAM]
+```
+
+***
+
+### 11.2.1 ROM → MBR
+
+* ROM executes bootstrap program
+* Loads **Master Boot Record (MBR)**
+
+***
+
+### 11.2.2 MBR → Boot Sector
+
+* MBR identifies active partition
+* Loads its boot sector
+
+***
+
+### 11.2.3 Boot Sector → OS Loading
+
+* Boot sector loads OS kernel into memory
+* OS starts execution
+
+***
+
+## 11.3 Disk Logical Structure
+
+***
+
+#### 🔁 Structure
+
+```mermaid
+flowchart LR
+    MBR --> DBR --> FAT --> Root --> Data
+```
+
+***
+
+### 11.3.1 Master Boot Record (MBR)
+
+> First sector of disk
+
+Contains:
+
+* Bootloader
+* Partition table
+
+***
+
+### 11.3.2 DOS Boot Record (DBR)
+
+> Boot sector of a partition
+
+* Contains file system info
+* Helps load OS
+
+***
+
+### 11.3.3 File Allocation Table (FAT)
+
+> Tracks allocation of disk blocks
+
+* Shows which blocks belong to which file
+
+***
+
+### 11.3.4 Root Directory
+
+* Contains file entries
+* Starting point of file system
+
+***
+
+### 11.3.5 Data Area
+
+* Actual storage of file data
+
+***
+
+### 🧠 Insight
+
+👉 Disk = **Control info + Directory + Data**
+
+***
+
+## 11.4 FAT Details
+
+***
+
+### 11.4.1 FAT Entries
+
+Each entry represents a **cluster status**
+
+***
+
+### 11.4.2 Free Cluster
+
+* Available for allocation
+
+***
+
+### 11.4.3 Bad Sector
+
+* Damaged and unusable
+
+***
+
+### 11.4.4 End of File (EOF)
+
+* Marks end of file
+
+***
+
+#### 🔁 Example
+
+```
+Cluster 1 → 2 → 5 → EOF
+```
+
+***
+
+### 🧠 Insight
+
+👉 FAT acts like a **linked list of clusters**
+
+***
+
+## 11.5 Disk Reliability
+
+***
+
+### 11.5.1 RAID Concept
+
+> RAID = Redundant Array of Independent Disks
+
+👉 Combines multiple disks for:
+
+* Performance
+* Reliability
+
+***
+
+### 11.5.2 RAID Levels
+
+***
+
+#### 🔹 RAID 0 (Striping)
+
+![Image](https://images.openai.com/static-rsc-4/TQpOM7hy3hknt3rBR8ZhuQFH98WeXPYSHq6mBHS9S6qnsJZbn6tc0UfNzpH3FLmulw_zMLKmc89b6e0wLjRHpaSK5ap29JHjAzJpmDrxs00Qqr4o4AfuJww1kCtXyCANGQxbscnIGK_H0gye1uzneWBBQF9mj5SbyhtUBFiXYOCc18xiAGt1EZ9ulYmkgN3g?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/MmLl33mN3eZN6qF7uJOR5sAFHkkrAa0leiWHDljRZDlvwFBPRJ3NVPHNxsCPlK7erNyDPN3GR6I5agXPaj-c9Zg4wQYaI2VngVsmS_CUFnb6jj1iK7IMJyeBRx5YRhmhXKakBXzOT_N02kDGO1S32QdiQU7UIgqL2F6TSlwNwuGapLfBfpwR0ZLvT35P795h?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/T50aWNMH37ql1azG3iY6sqHOKeffcQIsjHXzWhUkTmmHdfxJlcyIWyql94LpEdJ7Yf0Fb5Nk50225uIAhcdUyqJ5NVC2kpxeMQGkZfi7YLKjO_kr8sG4I3GYz5qp7gJ2uYdnEDwKpNz4vxV1YBAwqzJcWfnOTbcB-5cZCV4UmvO7GtwSNNKnU1nzJMaZYfKs?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/22gPc4sUYD_8IJ0bs2jkJ9QlRFQxynRtaeqO9-97eB-nxD4JNePXVMWc76R-mX7QmK5uRlsBT3K8OiC1LmozoZiuo7ev8UEtqQFR7e7Mxrl7NEu2u0Dfvx1t6fbmiRlX5PvZE8UJu5WLHvHiP262bcNf9v2tGti8GHuClto4MV9UtPn8M2pGfDNdXPgUsZYK?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/lVZWZEZ2HHg2FhJFALkV_ywUTPC5mvzDRKMO8nKhTZi0lq0S6EDVEut_nVsKhIOp2SEwegQxS8cllGEF0jCpgdXjNWJlGITfAyPhXUJax-FyO8U85tpn01xJp2Fw_MOdivsdVDWASTBGyGirs3W300wlVNmZpGdQ-v7NDQsq0xyFN0dYM1nsDxEWBmE0LqE7?purpose=fullsize)
+
+* Splits data across disks\
+  ✔ Fast\
+  ❌ No protection
+
+***
+
+#### 🔹 RAID 1 (Mirroring)
+
+![Image](https://images.openai.com/static-rsc-4/shVU1-AyhG3BrQQSxkTeeRY6ZiQZ7PfzIca79HyEB4D59SlMl4yME1_KGc5dhTSdfOpVsjr5aDPAfozYIMFM_Ue7Hf38BQ9qELh2cTNpIBU4eJ31ZlofE4WKxpCwmSND2OhbcedOdLITaKttHxrcd1YaNgXL2RR6HP1hTlgvem7bXN4Q0R-FDxOtE63ghMWc?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/Xzy14aR8SBfQhyX592ti3uN8IIVYi_pknRKKfONgGWNG_3zGgt2vop8HMzv116nesCPUfu3t9DWDTiAkZy7fIeo0W5FGs_qwaeF1Kj8V72XEzz9JJuYgv72DhDpl514ocKb-K8m3GdPIvEQWawgoyogvfnWJnPrs7q1UOaM9o8UqhQBWzXrZn142MPhUEvwp?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/MmLl33mN3eZN6qF7uJOR5sAFHkkrAa0leiWHDljRZDlvwFBPRJ3NVPHNxsCPlK7erNyDPN3GR6I5agXPaj-c9Zg4wQYaI2VngVsmS_CUFnb6jj1iK7IMJyeBRx5YRhmhXKakBXzOT_N02kDGO1S32QdiQU7UIgqL2F6TSlwNwuGapLfBfpwR0ZLvT35P795h?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/EciKkPcbVxCozS98Uxj6bEVkToBwrjZ_ZJcV9ow0qwUCeUII8tfQHClBFx3Z6lDQJAeI9qlFLSAVmdIjJqeRsMHzhqxkRm2rtvlwUgK9CnTHTq9dQhFbYOfPROVeknECpdOMdOZ7El0kS9mrXAsd9FOKS0jRdpHt672H8rpqa1oEMPSthLl0upQUENkAApJj?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/DaakBbbDt5qsFnWX9pJP3Nxrz4pgU3xgFg62JFtWMyw4HasI-CNePP37YIlz2jAEXNtQSzeqttfEyv-9nd6QzRWz3GKBMoWWdY6do67hCoHetUJj2iTHqzIFP0s5EYf2Kp85ILtFpys4JUvL-_C2LcBHogb8UmpBDfnwyijZhTVpRGXKu0qcd3xQppd82bhs?purpose=fullsize)
+
+* Duplicate data\
+  ✔ High reliability\
+  ❌ Double storage
+
+***
+
+#### 🔹 RAID 5 (Parity)
+
+![Image](https://images.openai.com/static-rsc-4/CaFY7hgd7rDnc0xwJ4DIbFcYm9K6f4BAEbJAcGf37VwPNjfRg9YspAT3RNtTIyJNsnRQ8jk2ysFSuWGglI0kuR7dYc0yrkhXqRTHm1-W_bY6vFxdKAhzDS92Tx3dWL-CWT4a38fUgbAJFnBqi3Hsl-ZdPfyAYD8CtytXCjbHS17VcYnVaeE9Ld5wApdotB4i?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/se1czADj1MqhtloxKnVBbKJhhDJmS7iMPOEZb5B0nf28CJ5Zz9Fm8pQpSe8Rtd1Q8Ai9qIAlT6_wa7FaBKkBgRxQzyUZYxWZxM6mzc2PmGJQ-QqlBJMw5sdgMBvELEoMNdZnycebvR6grA99CrhSIicsszfVmssaR0552gQeTGIftRTd_RlEIP8Dq_k0ByHd?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/tlKYiHYKME7jVh8ootVcH8l5EhVVHbeLXZ5R1QxPAO_kmF2dQ2IhIYDNGJIRN29C_2jUb8ss2IOiRkK3eTjleKIYjV5iLiRs1MFgNSW4LryHkxr2obvD4S9bHupuCOcWqvcGumUPHZ1anowPy3Uzk52TIHXNahkip-7DGKUoNXBLKu1tAjP7Mo-OfTQ8g0LU?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/oOzZ2esxoAf8UJnGQl09nkdxJTBuSyqaIQK8PelKXXEd3qAcsGSpFgNtwep0Qg632tiATT9GMeTNVbQKOXqnr3DOmgbxTuzsqEZCp-N-yu4oZ22s3HK0MPoBkzUdf6c24toxDjP93iVRkaxcPfxHUr0G_YY6xJW5uzEXHgPSv9ETZ_-YS9JI77Fq1d05Zy-R?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/7TRnklGAyO8Tz2SFaAw1-hWLwAi8LxIdU1kJQE7pBYaptMeQahVx3qIr6zxqN-_u0htvcFh3Lk9IqvDF_3k-6CjhdZxIzIPfCreD5ILxzJW7vklKWL1_em3iKijlw3biyJv4QTIhTBw5vyT9kgroUQFdUCQpjbOIcEtX3G_jL6iTC9GPVloIhxkz_-xq_WbY?purpose=fullsize)
+
+* Uses parity for recovery\
+  ✔ Balanced\
+  ✔ Fault tolerant
+
+***
+
+#### 🔹 RAID 10 (1+0)
+
+![Image](https://images.openai.com/static-rsc-4/kqEgazLSSWc12dsyXngLCIs8iJnkDZWqVqV9SGOdNn-5uGOqrtDhkCzJoYs77dmAVJ_i5xPHGHtgS0iHt3styRTdohYtvHaB2PL-meyoDBJxnQxWc7j3KUdJfyImtjE339sbG9XmU7MQuVYkoU_XvZkqv0SC-de4HyVUUL3RKbb3Mx03bjZuH5BzhP2l5Bdc?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/gSl5sQUtMaRBbKoLAJeJTT8DR2zBaErwJwGchVzsO3qbpPo29SOANh7DaQETaiUxyvbeBCG6BI1UsuquAde2B2kIChpi5o6ja52FAxtafnZDxoKO7trrJz4OlE4DOnGap9E6DMIGwpII0uV35e5MifoKtab1nUtZezVl7d3eAEUYLyM7V4WLfMX3dgmrvXGq?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/ezxDqqhyG-luEbEmeVf819bA0BmFSOEEIi5CvNAzFk_aziBozfJk_rJnIVqUSYnTaQfzNQBcbdm5CjT6tQoMU3DFSj1VkVevY61XJsOCG3KdfouhmtsQQgjcdcjwAHFXpXdR5G1fWbL4CvOl0GN7R1jcPi8sbBGJANhip93WeRODzsj_LExIlKw9hj6Llui9?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/7k0AQ7WeBA963z89PZnkKfMkIJM4Q9KaTC-770fra7nHsn4BoJZI0sAQ4CHqHvAYjZfTIJSarEb2ClU1-rhXwNeb7Erx2LFCu_JBSOTiNASlIhIEtBK1aYW314nEhELHM_SlOHkuFlx9B0NKYm0z0G1bsy37mn_ZGVxgdk3-UFz0wDowYsEHZcJyS_4Xtliy?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/SpKp0OLO5ykcjjxCHaNcn-eFVCvg-Nj_zRlNtCWBu0suKtf-g_0ksKZkKfp9-1gUvJmHASSt_enj68VREXrzGp0BV3dpn66nAOqUVX2YqIvYtoUyifwOVfuohB36CNUxpu54FZorjv6xGeo09UI4l97QAsAopUM-SiHMnwHE4gaiibuHcW9GjSzWyW8WEiD2?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/N-3zgPZsBqEDvfffMGIaGltY3DCozfSD0zTz_XDVjgoYCQHFVdXM4Ebals1LX3z6QShFLcWwscmF0Uv_4vqmQnmhE0MabDWTczQ2FeSt3_c_QTdm-vPu4TBdexY11HKGwjDtRuQLJT4dby8RZ0U_qRyujPCXfykM4fsguKjLivOeXPmCakHWoTgpxDGAq63A?purpose=fullsize)
+
+* Combination of RAID 0 + RAID 1\
+  ✔ Fast + reliable\
+  ❌ Expensive
+
+***
+
+## 11.6 Bad Blocks
+
+***
+
+### 11.6.1 Definition
+
+> Bad blocks are **damaged disk areas that cannot store data**
+
+***
+
+### 11.6.2 Causes
+
+* Physical damage
+* Manufacturing defects
+* Wear and tear
+
+***
+
+### 11.6.3 Detection
+
+* Disk scanning tools
+* Error detection codes
+
+***
+
+### 11.6.4 Management
+
+* Mark block as unusable
+* Replace with spare block
+* Use RAID for recovery
+
+***
+
+### 🔥 Final Summary
+
+| Concept   | Meaning            |
+| --------- | ------------------ |
+| Booting   | Start OS           |
+| MBR       | First disk sector  |
+| FAT       | Tracks file blocks |
+| RAID      | Reliability        |
+| Bad Block | Damaged area       |
+
+***
+
+### 🎯 Important Exam Points
+
+* Boot process flow (very common)
+* MBR vs DBR
+* FAT working
+* RAID levels comparison
+* Bad blocks handling
+
+***
+
+### 💡 Memory Trick
+
+👉 **B-M-F-R-B**
+
+* B → Boot
+* M → MBR
+* F → FAT
+* R → RAID
+* B → Bad blocks
+
+***
+
+### 🧠 Final Insight
+
+* Booting = **system startup process**
+* FAT = **file tracking system**
+* RAID = **data safety mechanism**
+
+***
+
+<h2 align="center"><a data-footnote-ref href="#user-content-fn-1">END</a></h2>
+
+[^1]: This is the end.
